@@ -76,7 +76,7 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     messages.info(request, "You have been logged out.")
-    return redirect('login')
+    return redirect('home')
 
 # Blog Page
 def blog(request):
