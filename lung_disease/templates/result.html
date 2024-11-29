@@ -1,0 +1,43 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h4 class="text-center">Report after Diagnosis</h4>
+    <div class="row justify-content-center mt-4">
+        <!--div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <img src="{{ latest_image.image.url }}" alt="Uploaded Image" class="card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Detail of Patient</h5>
+                    <p class="card-text">Patient Name: {{ latest_image.first_name }} {{ latest_image.last_name}}</p>
+                    <p class="card-text">Gender: {{ latest_image.gender }}</p>
+                    <p class="card-text">Age: {{ latest_image.age }}</p>
+                    <p class="card-text">Diagnosed report: -----------</p>
+                    <p class="card-text">Uploaded on: {{ latest_image.uploaded_at }}</p>
+                </div>
+            </div>
+        </div-->
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{ latest_image.image.url }}" class="img-fluid rounded-start" alt="Uploaded Image">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Detail of Patient</h5>
+                        <p class="card-text">Patient Name: {{ latest_image.first_name }} {{ latest_image.last_name}}</p>
+                        <p class="card-text">Gender: {{ latest_image.gender }}</p>
+                        <p class="card-text">Age: {{ latest_image.age }}</p>
+                        <p class="card-text">Diagnosed report: -----------</p>
+                        <p class="card-text">Uploaded on: {{ latest_image.uploaded_at }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+{% endblock %}

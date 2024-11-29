@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home - Lung Disease App
+{% endblock %}
+
+{% block content %}
+<!-- Full Page Hero Section -->
+<section class="hero-section d-flex justify-content-center align-items-center text-center">
+    <div>
+        <h1 class="fw-bold" style="font-size: 3.5rem;">Empowering Your <br><span style="color: #007bff;">Lungs Health</span></h1>
+        <h2 class="fw-bold mt-3">with AI Insights</h2>
+        <p class="mt-4" style="font-size: 1.2rem; color: #6c757d;">
+            Upload your medical reports, and let our advanced AI provide you with diagnostic insights on lung health.
+        </p>
+        <button class="btn btn-primary mt-4 px-5 py-2" id="scrollToForm">Let's Begin</button>
+    </div>
+</section>
+
+<!-- Section for the Form -->
+<section id="form-section" class="form-section">
+    <div class="container mt-5">
+        <h3 class="text-center mb-4">To Proceed, Provide Your Medical Data for Analysis</h3>
+
+        <!-- Upload Form -->
+        <div class="row justify-content-center" >
+            <div class="col-lg-6 col-md-8" >
+                <form method="post" enctype="multipart/form-data" class="p-4 shadow-sm rounded border" style="background-color: whitesmoke">
+                    {% csrf_token %}
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="first_name" class="form-label fw-bold">First Name</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Enter First Name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="last_name" class="form-label fw-bold">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Enter Last Name" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3"> 
+                        <div class="col-md-6">
+                            <label for="gender" class="form-label fw-bold">Gender</label>
+                            <select id="gender" name="gender" class="form-select" required>
+                                <option value="" selected>----------</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="age" class="form-label fw-bold">Age</label>
+                            <input type="number" id="age" name="age" class="form-control" placeholder="Enter Age" min="0" max="120" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-bold">Description</label>
+                        <textarea id="description" name="description" class="form-control" rows="3" placeholder="Add any additional information"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label fw-bold">Upload CT-SCAN / X-RAY Image</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="image" name="image" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
