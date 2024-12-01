@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .forms import UserRegisterForm, ImageUploadForm
 from .models import UploadedImage
+from django.shortcuts import render, redirect
+
+
 
 # Home Page
 #@login_required
@@ -45,17 +49,39 @@ def result(request):
 # User Registration
 def register(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, "Registration successful! Welcome!")
-            return redirect('home')
-        else:
-            messages.error(request, "Registration failed. Please correct the errors below.")
-    else:
-        form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form})
+        # Get form data
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        # Validate the form
+        if password1 != password2:
+            messages.error(request, "Passwords do not match.")
+            return render(request, 'register.html')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+            return render(request, 'register.html')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists.")
+            return render(request, 'register.html')
+
+        # Create the user with first name and last name
+        user = User.objects.create_user(username=username, email=email, password=password1)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+
+        # Automatically log the user in after registration
+        login(request, user)
+        messages.success(request, "Registration successful! Welcome!")
+        return redirect('login')
+
+    return render(request, 'register.html')
 
 # User Login
 def user_login(request):
