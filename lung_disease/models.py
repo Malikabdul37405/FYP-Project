@@ -20,3 +20,10 @@ class UploadedImage(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.image.name}"
 
+class ContactInfo(models.Model):
+    address = models.CharField('Address', max_length=255, default="2nd Flr, Chaudhary Plaza, Rawalpindi")
+    phone = models.CharField('Phone', max_length=16, default="+92-331-6262-363")
+    email = models.EmailField('Email', default="admin@info.com")
+    
+    def __str__(self):
+        return "Contact Information"

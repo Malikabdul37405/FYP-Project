@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .forms import UserRegisterForm, ImageUploadForm
-from .models import UploadedImage
+from .models import UploadedImage, ContactInfo
 from django.shortcuts import render, redirect
 
 
@@ -131,3 +131,36 @@ def contact(request):
         messages.success(request, "Thank you for reaching out! We'll get back to you soon.")
         return redirect('contact')
     return render(request, 'contact.html')
+
+
+"""def contact(request):
+    if request.method == "POST":
+        # Process contact form submission
+        name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        # Save the submitted form data (optional)
+        ContactInfo.objects.create(address=name, phone=message, email=email)
+
+        # Show a success message to the user
+        messages.success(request, "Thank you for reaching out! We'll get back to you soon.")
+
+        # Redirect to prevent resubmission
+        return redirect('contact')
+
+    return render(request, 'contact.html')"""
+
+
+def contact_view(request):
+    # Retrieve the latest ContactInfo object, or create a default one if none exists
+    contact_info = ContactInfo.objects.first()
+    if not contact_info:
+        contact_info = ContactInfo.objects.create(
+            address="2nd Flr, Chaudhary Plaza, Rawalpindi",
+            phone="+92-331-6262-363",
+            email="default@example.com"
+        )
+
+    # Render the page with contact info (but no form handling)
+    return render(request, 'contact.html', {'contact_info': contact_info})

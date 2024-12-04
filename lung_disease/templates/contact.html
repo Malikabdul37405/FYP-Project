@@ -5,13 +5,11 @@ Contact Us
 {% endblock %}
 
 {% block content %}
-<!-- Contact Us Section -->
 <section class="contact-section rounded p-4 mb-4" style="background: rgba(28, 28, 28, 0.9); color: #ffffff;">
     <div class="container">
         <h2 class="text-center mb-4 fw-bold">Contact Us</h2>
         <p class="text-center mb-5" style="color: #d3d3d3;">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
-            standard dummy text ever since the 1500s.
+            We’re here to help! Contact us with your inquiries, and we’ll respond as soon as possible.
         </p>
         
         <div class="row">
@@ -21,19 +19,19 @@ Contact Us
                     <h4 style="color: #00bfff;">
                         <i class="fas fa-map-marker-alt"></i> Address
                     </h4>
-                    <p>4671 Sugar Camp Road, Owatonna, Minnesota, 55060</p>
+                    <p>{{ contact_info.address }}</p>
                 </div>
                 <div class="rounded p-4 mb-4" style="background: rgba(255, 255, 255, 0.1);">
                     <h4 style="color: #00bfff;">
                         <i class="fas fa-phone-alt"></i> Phone
                     </h4>
-                    <p>571-457-2321</p>
+                    <p>{{ contact_info.phone }}</p>
                 </div>
                 <div class="rounded p-4" style="background: rgba(255, 255, 255, 0.1);">
                     <h4 style="color: #00bfff;">
                         <i class="fas fa-envelope"></i> Email
                     </h4>
-                    <p>ntamerrwael@mfano.ga</p>
+                    <p>{{ contact_info.email }}</p>
                 </div>
             </div>
 
@@ -41,7 +39,7 @@ Contact Us
             <div class="col-md-6">
                 <div class="card p-4 shadow rounded" style="background: #ffffff; color: #000000;">
                     <h4 class="text-center mb-4 fw-bold">Send Message</h4>
-                    <form method="post">
+                    <form method="post" action="{% url 'contact_submit' %}">
                         {% csrf_token %}
                         
                         <!-- Full Name -->
@@ -64,7 +62,7 @@ Contact Us
 
                         <!-- Submit Button -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill">Send</button>
+                            <button type="submit" class="btn btn-dark px-4 py-2 rounded-pill">Send</button>
                         </div>
                     </form>
                 </div>
