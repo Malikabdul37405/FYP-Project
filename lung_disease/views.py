@@ -13,11 +13,16 @@ from django.shortcuts import render, redirect
 # Home Page
 #@login_required
 def home(request):
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        # Redirect to the login page with a "next" parameter
+        return redirect(f'/login/?next={request.path}')
+
     if request.method == "POST":
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.save(commit=False)
-            image.user = request.user
+            image.user = request.user  # Associate the image with the authenticated user
             image.save()
 
             # Save the image ID in the session
@@ -91,11 +96,17 @@ def user_login(request):
             user = form.get_user()
             login(request, user)
             messages.success(request, "Login successful!")
+
+            # Redirect to the page the user was trying to access, or home
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
             return redirect('home')
         else:
             messages.error(request, "Invalid username or password.")
     else:
         form = AuthenticationForm()
+
     return render(request, 'login.html', {'form': form})
 
 # User Logout

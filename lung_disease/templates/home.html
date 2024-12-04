@@ -20,59 +20,62 @@ Home - Lung Disease App
 <!-- Section for the Form -->
 <section id="form-section" class="form-section">
     <div class="container mt-5">
-        <h3 class="text-center mb-4">To Proceed, Provide Your Medical Data for Analysis</h3>
+        <div class="card p-3 shadow border-0 mx-auto" style="max-width: 600px;">
+            <h3 class="text-center mb-3">Provide Your Medical Data for Analysis</h3>
 
-        <!-- Upload Form -->
-        <div class="row justify-content-center" >
-            <div class="col-lg-6 col-md-8" >
-                <form method="post" enctype="multipart/form-data" class="p-4 shadow-sm rounded border" style="background-color: whitesmoke">
-                    {% csrf_token %}
+            <!-- Upload Form -->
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="first_name" class="form-label fw-bold">First Name</label>
-                            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Enter First Name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="last_name" class="form-label fw-bold">Last Name</label>
-                            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Enter Last Name" required>
-                        </div>
+                <!-- First Name & Last Name -->
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label for="first_name" class="form-label fw-bold">First Name *</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" required>
                     </div>
-
-                    <div class="row mb-3"> 
-                        <div class="col-md-6">
-                            <label for="gender" class="form-label fw-bold">Gender</label>
-                            <select id="gender" name="gender" class="form-select" required>
-                                <option value="" selected>----------</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="age" class="form-label fw-bold">Age</label>
-                            <input type="number" id="age" name="age" class="form-control" placeholder="Enter Age" min="0" max="120" required>
-                        </div>
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label fw-bold">Last Name *</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" required>
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label for="description" class="form-label fw-bold">Description</label>
-                        <textarea id="description" name="description" class="form-control" rows="3" placeholder="Add any additional information"></textarea>
+                <!-- Gender & Age -->
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label for="gender" class="form-label fw-bold">Gender *</label>
+                        <select id="gender" name="gender" class="form-select" required>
+                            <option value="" selected>----------</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
+                    <div class="col-md-6">
+                        <label for="age" class="form-label fw-bold">Age *</label>
+                        <input type="number" id="age" name="age" class="form-control" placeholder="Age" min="0" max="120" required>
+                    </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label for="image" class="form-label fw-bold">Upload CT-SCAN / X-RAY Image</label>
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="image" name="image" required>
-                        </div>
-                    </div>
+                <!-- Description -->
+                <div class="mb-2">
+                    <label for="description" class="form-label fw-bold">Description</label>
+                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Add any additional information"></textarea>
+                </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
+                <!-- File Upload -->
+                <div class="mb-2">
+                    <label for="image" class="form-label fw-bold">Upload CT-SCAN / X-RAY *</label>
+                    <input type="file" class="form-control" id="image" name="image" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-dark px-4 py-2 rounded-pill">Submit →</button>
+                </div>
+            </form>
         </div>
     </div>
 </section>
+
+
 {% endblock %}
