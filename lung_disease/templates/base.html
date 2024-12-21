@@ -34,8 +34,11 @@
 
         /* Navigation Bar */
         .navbar {
-            background-color: transparent;
+            background: transparent;
             padding: 20px 30px;
+            position: sticky; /* Make the navbar sticky */
+            top: 0;
+            z-index: 999; /* Ensure it's always on top */
         }
         .navbar-brand img {
             height: 40px;
@@ -44,22 +47,22 @@
             font-size: 16px;
             color: black !important;
             margin: 0 15px;
-            transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+            transition: color 0.7s ease, background-color 0.7s ease; /* Smooth transition */
             padding: 5px 10px; /* Padding for hover background */
-            border-radius: 5px; /* Rounded edges for hover background */
+            border-bottom: 2px solid transparent; /* Initial state (no underline) */
         }
 
         /* Hover Effect for Nav Links */
         .navbar-nav .nav-link:hover {
-            color: white !important; /* Change text color on hover */
-            background-color: #7f8e9e; /* Add a blue background */
+            color: #007bff !important; /* Change text color on hover */
+            border-bottom: 2px solid #007bff; /* Add blue underline */
             text-decoration: none; /* Remove underline */
         }
 
         /* Active Link Styling (Optional, for better UX) */
         .navbar-nav .nav-link.active {
-            color: white !important;
-            background-color: #0056b3; /* Slightly darker blue for active state */
+            color: #007bff !important;
+            border-bottom: 2px solid #007bff; /* Blue underline for active link */
         }
 
         html, body {
@@ -160,7 +163,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <img src="{% static 'images/Lungs_Logo.png' %}" alt="Lung Disease App Logo">
+                <img src="{% static 'images/Lungs_Logo1.png' %}" alt="Lung Disease App Logo" style="height: 50px; width: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>

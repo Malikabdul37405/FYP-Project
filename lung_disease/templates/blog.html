@@ -4,34 +4,75 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center">Blog</h2>
-    <p class="text-center">Stay updated with the latest developments in lung disease research and technology.</p>
-    <hr>
-    <ul class="list-unstyled">
-        <li class="mb-4">
-            <div class="card">
+    <!-- Section Heading -->
+    <h2 class="text-center fw-bold" style="font-size: 2.5rem; color: #007bff;">Blog</h2>
+    <p class="text-center text-muted" style="font-size: 1.2rem;">Stay updated with the latest developments in lung disease research and technology.</p>
+    <hr class="mb-5">
+
+    <!-- Blog List -->
+    <ul class="list-unstyled row">
+        <!-- Blog Post 1 -->
+        <li class="mb-4 col-md-4 d-flex">
+            <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <img src="/static/images/b1_ground.jpg" class="card-img-top" alt="Lung Disease">
                 <div class="card-body">
-                    <h5 class="card-title"><a href="#">Understanding Lung Diseases: Causes and Prevention</a></h5>
-                    <p class="card-text">An in-depth look at the causes of lung diseases and the importance of prevention.</p>
+                    <h5 class="card-title fw-bold">
+                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">Understanding Lung Diseases: Causes and Prevention</a>
+                    </h5>
+                    <p class="card-text text-muted mt-2">An in-depth look at the causes of lung diseases and the importance of prevention.</p>
+                </div>
+                <div class="card-footer bg-white border-0 text-end">
+                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
                 </div>
             </div>
         </li>
-        <li class="mb-4">
-            <div class="card">
+
+        <!-- Blog Post 2 -->
+        <li class="mb-4 col-md-4 d-flex">
+            <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <img src="/static/images/b1_ground.jpg" class="card-img-top" alt="Lung Disease">
                 <div class="card-body">
-                    <h5 class="card-title"><a href="#">The Role of AI in Diagnosing Respiratory Conditions</a></h5>
-                    <p class="card-text">Exploring how AI can help in diagnosing lung diseases and improving treatment plans.</p>
+                    <h5 class="card-title fw-bold">
+                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">The Role of AI in Diagnosing Respiratory Conditions</a>
+                    </h5>
+                    <p class="card-text text-muted mt-2">Exploring how AI can help in diagnosing lung diseases and improving treatment plans.</p>
+                </div>
+                <div class="card-footer bg-white border-0 text-end">
+                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
                 </div>
             </div>
         </li>
-        <li class="mb-4">
-            <div class="card">
+
+        <!-- Blog Post 3 -->
+        <li class="mb-4 col-md-4 d-flex">
+            <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <img src="/static/images/b1_ground.jpg" class="card-img-top" alt="Lung Disease">
                 <div class="card-body">
-                    <h5 class="card-title"><a href="#">How to Maintain Healthy Lungs in a Polluted Environment</a></h5>
-                    <p class="card-text">Tips on keeping your lungs healthy despite environmental pollution.</p>
+                    <h5 class="card-title fw-bold">
+                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">How to Maintain Healthy Lungs in a Polluted Environment</a>
+                    </h5>
+                    <p class="card-text text-muted mt-2">Tips on keeping your lungs healthy despite environmental pollution.</p>
+                </div>
+                <div class="card-footer bg-white border-0 text-end">
+                    <a href="blogdetail.html" class="btn btn-sm btn-primary">Read More</a>
                 </div>
             </div>
         </li>
     </ul>
 </div>
+
+<!-- Inline Styling -->
+<style>
+    .card:hover {
+        transform: scale(1.03); /* Slight zoom effect */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    }
+    .card-title a:hover {
+        color: #007bff; /* Color transition on hover */
+    }
+    .card-img-top {
+        height: 180px;
+        object-fit: cover; /* Ensures the image scales nicely without distortion */
+    }
+</style>
 {% endblock %}
