@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .forms import UserRegisterForm, ImageUploadForm
-from .models import UploadedImage, ContactInfo
+from .models import UploadedImage, ContactInfo, Blog
 from django.shortcuts import render, redirect
 
 
@@ -117,8 +117,12 @@ def user_logout(request):
 
 # Blog Page
 def blog(request):
-    # Static content for now, can be expanded to fetch posts from a database
-    return render(request, 'blog.html')
+    blogs = Blog.objects.all()  # Fetch all blog posts
+    return render(request, 'blog.html', {'blogs': blogs})
+
+def blog_detail(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    return render(request, 'blog_detail.html', {'blog': blog})
 
 # Contact Us Page
 def contact(request):

@@ -5,59 +5,29 @@
 {% block content %}
 <div class="container mt-5">
     <!-- Section Heading -->
-    <h2 class="text-center fw-bold" style="font-size: 2.5rem; color: #007bff;">Blog</h2>
+    <h2 class="text-center fw-bold" style="font-size: 3.0rem;">Blogs</h2>
     <p class="text-center text-muted" style="font-size: 1.2rem;">Stay updated with the latest developments in lung disease research and technology.</p>
-    <hr class="mb-5">
+    <br class="mb-5"><br class="mb-5">
 
     <!-- Blog List -->
     <ul class="list-unstyled row">
-        <!-- Blog Post 1 -->
+        {% for blog in blogs %}
         <li class="mb-4 col-md-4 d-flex">
             <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                <img src="/static/images/b1_ground.jpg" class="card-img-top" alt="Lung Disease">
+                <img src="{{ blog.image.url }}" class="card-img-top" alt="{{ blog.title }}">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">
-                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">Understanding Lung Diseases: Causes and Prevention</a>
+                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">{{ blog.title }}</a>
                     </h5>
-                    <p class="card-text text-muted mt-2">An in-depth look at the causes of lung diseases and the importance of prevention.</p>
+                    <p class="card-text text-muted mt-2">{{ blog.content|slice:":100" }}...</p>  <!-- Display a snippet of the content -->
+                    <p class="text-muted">Author: {{ blog.author }}</p>  <!-- Display the author -->
                 </div>
                 <div class="card-footer bg-white border-0 text-end">
-                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
+                    <a href="{% url 'blog_detail' blog.id %}" class="btn btn-sm btn-primary">Read More</a>
                 </div>
             </div>
         </li>
-
-        <!-- Blog Post 2 -->
-        <li class="mb-4 col-md-4 d-flex">
-            <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                <img src="/static/images/b1_ground.jpg" class="card-img-top" alt="Lung Disease">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">
-                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">The Role of AI in Diagnosing Respiratory Conditions</a>
-                    </h5>
-                    <p class="card-text text-muted mt-2">Exploring how AI can help in diagnosing lung diseases and improving treatment plans.</p>
-                </div>
-                <div class="card-footer bg-white border-0 text-end">
-                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
-                </div>
-            </div>
-        </li>
-
-        <!-- Blog Post 3 -->
-        <li class="mb-4 col-md-4 d-flex">
-            <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
-                <img src="/static/images/b1_ground.jpg" class="card-img-top" alt="Lung Disease">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">
-                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">How to Maintain Healthy Lungs in a Polluted Environment</a>
-                    </h5>
-                    <p class="card-text text-muted mt-2">Tips on keeping your lungs healthy despite environmental pollution.</p>
-                </div>
-                <div class="card-footer bg-white border-0 text-end">
-                    <a href="blogdetail.html" class="btn btn-sm btn-primary">Read More</a>
-                </div>
-            </div>
-        </li>
+        {% endfor %}
     </ul>
 </div>
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 class UploadedImage(models.Model):
     GENDER_CHOICES = [
@@ -19,6 +20,20 @@ class UploadedImage(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.image.name}"
+
+class Blog(models.Model):
+    title = models.CharField('Title', max_length=255)
+    content = RichTextField('Content')
+    image = models.ImageField('Image', upload_to='blog_images/', blank=True, null=True)
+    author = models.CharField('Author', max_length=200)
+    created_at = models.DateTimeField('Created At', auto_now_add=True)
+    updated_at = models.DateTimeField('Updated At', auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at']  # Order by the latest first
 
 class ContactInfo(models.Model):
     address = models.CharField('Address', max_length=255, default="2nd Flr, Chaudhary Plaza, Rawalpindi")
