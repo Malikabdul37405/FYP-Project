@@ -5,9 +5,11 @@
 {% block content %}
 <div class="container mt-5">
     <!-- Section Heading -->
-    <h2 class="text-center fw-bold" style="font-size: 3.0rem;">Blogs</h2>
-    <p class="text-center text-muted" style="font-size: 1.2rem;">Stay updated with the latest developments in lung disease research and technology.</p>
-    <br class="mb-5"><br class="mb-5">
+    <div class="text-center">
+        <h1 class="display-4 fw-bold text-primary">Blogs</h1>
+        <p class="lead text-muted" style="font-size: 2.25rem;">Discover insights, research, and updates in lung disease and healthcare.</p>
+        <hr class="mt-4 mb-5" style="width: 60px; height: 3px; background-color: #007bff; margin: 0 auto; border: none;">
+    </div>
 
     <!-- Blog List -->
     <ul class="list-unstyled row">
@@ -17,13 +19,12 @@
                 <img src="{{ blog.image.url }}" class="card-img-top" alt="{{ blog.title }}">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">
-                        <a href="#" class="text-decoration-none text-dark" style="transition: color 0.3s;">{{ blog.title }}</a>
+                        <a href="{% url 'blog_detail' blog.id %}" class="text-decoration-none text-dark" style="transition: color 0.3s;">{{ blog.title }}</a>
                     </h5>
-                    <p class="card-text text-muted mt-2">{{ blog.content|slice:":100" }}...</p>  <!-- Display a snippet of the content -->
-                    <p class="text-muted">Author: {{ blog.author }}</p>  <!-- Display the author -->
+                    <p class="card-text text-muted mt-2">{{ blog.content|slice:":150"|safe }}...</p>  <!-- Display a snippet of the content -->
                 </div>
                 <div class="card-footer bg-white border-0 text-end">
-                    <a href="{% url 'blog_detail' blog.id %}" class="btn btn-sm btn-primary">Read More</a>
+                    <a href="{% url 'blog_detail' blog.id %}" class="btn btn-sm btn-outline-primary">Continue Reading</a>
                 </div>
             </div>
         </li>
