@@ -6,12 +6,80 @@ Home - Lung Disease App
 
 {% block content %}
 
-<style>html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-</style><!-- Full Page Hero Section -->
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    /* Sections styling */
+    .hero-section {
+            height: 100vh; /* Full viewport height */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: black; 
+        }
+
+        /* Form Section */
+        .form-section {
+            color: black;
+            padding-bottom: 50px;
+        }
+        
+        /* Drag-and-drop box styles */
+        .dropzone {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #00bfff;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .dropzone:hover {
+            background: rgba(0, 191, 255, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            color: #00bfff;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+
+        .upload-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Input fields */
+        input,
+        textarea,
+        select {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #00bfff;
+            padding: 10px 15px;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #d3d3d3;
+        }
+
+        /* Form hover animation */
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+</style>
+
+<!-- Full Page Hero Section -->
 <section class="hero-section d-flex justify-content-center align-items-center text-center">
     <div>
         <h1 class="fw-bold" style="font-size: 4.5rem;">Biomedical <br><span style="color: #007bff;">Image Analysis</span></h1>
