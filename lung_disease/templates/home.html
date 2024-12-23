@@ -3,7 +3,7 @@
 {% block title %}
 Home - Lung Disease App
 {% endblock %}
-
+{% load static %}
 {% block content %}
 
 <style>
@@ -15,12 +15,18 @@ Home - Lung Disease App
 
     /* Sections styling */
     .hero-section {
-            height: 100vh; /* Full viewport height */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: black; 
-        }
+    height: 100vh; /* Full viewport height */
+    /*background-image: url("{% static 'images/bg_hero_section.jpg' %}");*/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: black;
+    margin: 0; /* Removes any default margin */
+    padding: 0; /* Removes any default padding */
+    width: 100%; /* Ensures it spans the full container width */
+    position: relative; /* Keeps it positioned properly within the layout */
+    z-index: 1; /* Keeps it behind the navbar */
+}
 
         /* Form Section */
         .form-section {

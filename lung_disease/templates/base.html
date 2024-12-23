@@ -29,13 +29,13 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            /* color: white; Optional: Adjust text color for better readability */
+            /* color: white;  */
         }
 
         /* Navigation Bar */
         .navbar {
-            background: transparent;
-            padding: 20px 30px;
+            background-color: white;
+            padding: 20px 40px;
             position: sticky; /* Make the navbar sticky */
             top: 0;
             z-index: 999; /* Ensure it's always on top */
@@ -67,6 +67,7 @@
 
         html, body {
             height: 100%;
+            width: 100%;
             margin: 0;
             
         }
@@ -208,7 +209,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <!--li class="nav-item"><a class="nav-link" href="/features/">Services</a></li-->
+                    <!--li class="nav-item"><a class="nav-link" href="/features/">Doctor</a></li-->
                     <li class="nav-item"><a class="nav-link" href="/blog/">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contact/">Contact Us</a></li>
                 </ul>
@@ -224,10 +225,10 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container">
+    <span class="container">
         {% block content %}
         {% endblock %}
-    </div>
+    </span>
 
     <!-- Footer -->
     <footer class="footer">

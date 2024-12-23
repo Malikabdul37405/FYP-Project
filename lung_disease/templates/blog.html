@@ -3,6 +3,21 @@
 {% block title %}Blog - Lung Disease App{% endblock %}
 
 {% block content %}
+<!-- Inline Styling -->
+<style>
+    .card:hover {
+        transform: scale(1.03); /* Slight zoom effect */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    }
+    .card-title a:hover {
+        color: #007bff; /* Color transition on hover */
+    }
+    .card-img-top {
+        height: 180px;
+        object-fit: cover; /* Ensures the image scales nicely without distortion */
+    }
+</style>
+
 <div class="container mt-5">
     <!-- Section Heading -->
     <div class="text-center">
@@ -31,19 +46,4 @@
         {% endfor %}
     </ul>
 </div>
-
-<!-- Inline Styling -->
-<style>
-    .card:hover {
-        transform: scale(1.03); /* Slight zoom effect */
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
-    }
-    .card-title a:hover {
-        color: #007bff; /* Color transition on hover */
-    }
-    .card-img-top {
-        height: 180px;
-        object-fit: cover; /* Ensures the image scales nicely without distortion */
-    }
-</style>
 {% endblock %}
