@@ -4,55 +4,62 @@
 
 <style>
     /* Container and Card Styling */
-.container {
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
+    .container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
 
-.card {
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+    .card {
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-.card:hover {
-    transform: scale(1.02);
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
-}
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    }
 
-/* Image Styling */
-.card img {
-    border-radius: 15px 0 0 15px;
-    object-fit: cover;
-}
+    /* Image Styling */
+    .card img {
+        border-radius: 15px 0 0 15px;
+        object-fit: cover;
+    }
 
-h4 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 15px;
-}
+    h4 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+    }
 
-p {
-    font-size: 0.9rem;
-    margin: 5px 0;
-}
+    p {
+        font-size: 0.9rem;
+        margin: 5px 0;
+    }
 
-.card-title {
-    font-size: 1.2rem;
-    color: #00bfff;
-    margin-bottom: 10px;
-}
+    .card-title {
+        font-size: 1.2rem;
+        color: #00bfff;
+        margin-bottom: 10px;
+    }
 
+    /* Highlight Prediction */
+    .prediction-result {
+        font-weight: bold;
+        color: #00ff00;
+        font-size: 1.1rem;
+    }
 </style>
+
 <div class="container mt-5">
     <div class="card shadow border-0 mx-auto" style="max-width: 600px; background: rgba(0, 0, 0, 0.7); color: white; border-radius: 15px;">
         <h4 class="text-center mt-3 fw-bold">AI Powered Diagnosis Report</h4>
         <div class="row g-0 align-items-center mt-4">
             <!-- Image Section -->
             <div class="col-md-4">
-                <img src="{{ latest_image.image.url }}" class="img-fluid " alt="Uploaded Image" style="border-radius: 15px; ">
+                <img src="{{ latest_image.image.url }}" class="img-fluid " alt="Uploaded Image" style="border-radius: 15px;">
             </div>
 
             <!-- Patient Details Section -->
@@ -62,11 +69,17 @@ p {
                     <p class="card-text"><strong>Patient Name:</strong> {{ latest_image.first_name }} {{ latest_image.last_name }}</p>
                     <p class="card-text"><strong>Gender:</strong> {{ latest_image.gender }}</p>
                     <p class="card-text"><strong>Age:</strong> {{ latest_image.age }}</p>
-                    <p class="card-text"><strong>Diagnosed Report:</strong> <span style="color: #00bfff;">----------</span></p>
+                    
+                    <!-- Prediction Result -->
+                    <p class="card-text"><strong>Diagnosed Report:</strong> 
+                        <span class="prediction-result">{{ prediction }}</span>
+                    </p>
+
                     <p class="card-text"><strong>Uploaded on:</strong> {{ latest_image.uploaded_at }}</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
