@@ -22,18 +22,38 @@ def custom_swish(x):
 
 
 # ✅ Correct model path
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'lung_disease', 'densenet.h5')
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'lung_disease', 'mcnn_trained_model.h5')
 
 # ✅ Load the model safely
 if os.path.exists(MODEL_PATH):
     model = load_model(MODEL_PATH, custom_objects={"swish": custom_swish})
 else:
     model = None
-    print("⚠️ Model file not found! Please check 'densenet.h5' in 'lung_disease' folder.")
+    print("⚠️ Model file not found! Please check 'mcnn_trained_model.h5' in 'lung_disease' folder.")
 
 # ✅ Class labels for predictions
 CLASS_LABELS = ["Benign", "Malignant", "Normal", "Pneumonia"]
 
+"""# Register the swish activation function
+@tf.keras.utils.register_keras_serializable()
+#def custom_swish(x):
+def swish_activation(x):
+    #return swish(x)
+    return tf.keras.activations.swish(x)
+
+
+# ✅ Correct model path
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'lung_disease', 'TZH_4mcnn_trained_model.h5')
+
+# ✅ Load the model safely
+if os.path.exists(MODEL_PATH):
+    model = load_model(MODEL_PATH, custom_objects={"swish_activation": swish_activation})
+else:
+    model = None
+    print("⚠️ Model file not found! Please check 'TZH_4mcnn_trained_model.h5' in 'lung_disease' folder.")
+
+# ✅ Class labels for predictions
+CLASS_LABELS = ["Benign", "Malignant", "Normal", "Pneumonia"]"""
 
 # Home Page (Handles Image Upload)
 def home(request):
