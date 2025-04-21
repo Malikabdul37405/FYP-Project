@@ -5,6 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.contrib import messages
 from .forms import UserRegisterForm, ImageUploadForm
 from .models import UploadedImage, ContactInfo, Blog
@@ -13,6 +20,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.activations import swish
 import tensorflow as tf
+
 
 
 # Register the swish activation function
@@ -145,10 +153,6 @@ def register(request):
 
     return render(request, 'register.html')
 
-@login_required
-def dashboard(request):
-    return render(request, 'dashboard.html')
-
 # User Login
 def user_login(request):
     if request.method == 'POST':
@@ -206,3 +210,22 @@ def contact_view(request):
             email="default@example.com"
         )
     return render(request, 'contact.html', {'contact_info': contact_info})
+
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'change_password.html', {'form': form})

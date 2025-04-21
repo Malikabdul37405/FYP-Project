@@ -7,24 +7,53 @@
     <h2 class="mb-4">Welcome, {{ user.username }}</h2>
 
     <div class="card mb-4">
-        <div class="card-header">
-            Account Information
-        </div>
+        <div class="card-header">Account Information</div>
         <div class="card-body">
             <p><strong>Username:</strong> {{ user.username }}</p>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Password:</strong> {{ user.password }}</p>
+
+            <p>
+                <strong>Password:</strong>
+                <span id="passwordField" class="me-2">********</span>
+                <button id="togglePassword" class="btn btn-sm btn-outline-secondary" title="Show/Hide Password">
+                    <i class="fas fa-eye" id="eyeIcon"></i>
+                </button>
+                <a href="{% url 'change_password' %}" class="btn btn-sm btn-outline-primary ms-2" title="Edit Password">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </p>
         </div>
     </div>
-
-    <!--div class="card">
-        <div class="card-header">
-            Password Settings
-        </div>
-        <div class="card-body">
-            <p>If you want to update your password, click the button below.</p>
-            <a href="#" class="btn btn-primary">Change Password</a>
-        </div>
-    </div-->
 </div>
+
+<script>
+    const toggleBtn = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('passwordField');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    let showing = false;
+
+    toggleBtn.addEventListener('click', function () {
+        if (!showing) {
+            passwordField.textContent = "{{ user.password }}";
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.textContent = "********";
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+        showing = !showing;
+    });
+</script>
+<script>
+    function togglePassword() {
+        const field = document.getElementById('passwordField');
+        if (field.type === 'password') {
+            field.type = 'text';
+        } else {
+            field.type = 'password';
+        }
+    }
+</script>
 {% endblock %}

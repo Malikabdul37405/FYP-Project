@@ -13,5 +13,7 @@ urlpatterns = [
     path('contact/submit/', views.contact, name='contact_submit'), 
     path('result/', views.result, name='result'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('change-password/', views.change_password, name='change_password'),
+    
 
 ]
