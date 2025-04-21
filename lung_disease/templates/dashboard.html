@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
@@ -24,8 +23,41 @@
             </p>
         </div>
     </div>
+
+    <!-- Patient Records Accordion -->
+    <div class="accordion" id="patientAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingRecords">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRecords" aria-expanded="false" aria-controls="collapseRecords">
+                    <span class="badge bg-info text-dark me-2">{{ patient_records.count }}</span> Your Patient Records
+                </button>
+            </h2>
+            <div id="collapseRecords" class="accordion-collapse collapse" aria-labelledby="headingRecords" data-bs-parent="#patientAccordion">
+                <div class="accordion-body">
+                    {% if patient_records %}
+                        {% for record in patient_records %}
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-header bg-secondary text-white">
+                                    Record #{{ forloop.counter }}
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Date:</strong> {{ record.created_at|date:"M d, Y" }}</p>
+                                    <p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
+                                    <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+                                    <!-- Add more fields as needed -->
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-warning">No records found.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Password Toggle Script -->
 <script>
     const toggleBtn = document.getElementById('togglePassword');
     const passwordField = document.getElementById('passwordField');
@@ -45,15 +77,5 @@
         }
         showing = !showing;
     });
-</script>
-<script>
-    function togglePassword() {
-        const field = document.getElementById('passwordField');
-        if (field.type === 'password') {
-            field.type = 'text';
-        } else {
-            field.type = 'password';
-        }
-    }
 </script>
 {% endblock %}
