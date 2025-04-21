@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5 p-4 bg-light rounded shadow-sm">
+    <h2 class="mb-4">Welcome, {{ user.username }}</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Account Information
+        </div>
+        <div class="card-body">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Password:</strong> {{ user.password }}</p>
+        </div>
+    </div>
+
+    <!--div class="card">
+        <div class="card-header">
+            Password Settings
+        </div>
+        <div class="card-body">
+            <p>If you want to update your password, click the button below.</p>
+            <a href="#" class="btn btn-primary">Change Password</a>
+        </div>
+    </div-->
+</div>
+{% endblock %}

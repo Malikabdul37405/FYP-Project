@@ -145,6 +145,9 @@ def register(request):
 
     return render(request, 'register.html')
 
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
 
 # User Login
 def user_login(request):

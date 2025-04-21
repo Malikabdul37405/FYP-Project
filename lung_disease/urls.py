@@ -12,5 +12,6 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),     # Contact us page
     path('contact/submit/', views.contact, name='contact_submit'), 
     path('result/', views.result, name='result'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 
 ]
