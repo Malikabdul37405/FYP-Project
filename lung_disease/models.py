@@ -17,6 +17,7 @@ class UploadedImage(models.Model):
     description = models.TextField('Description',blank=True)     
     image = models.ImageField('Image',upload_to='uploads/') 
     uploaded_at = models.DateTimeField('Uploaded At',auto_now_add=True)
+    prediction = models.CharField('Prediction Result', max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.image.name}"

@@ -213,7 +213,11 @@ def contact_view(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    # Get all patient records uploaded by the currently logged-in user
+    patient_records = UploadedImage.objects.filter(user=request.user).order_by('-uploaded_at')
+    return render(request, 'dashboard.html', {
+        'patient_records': patient_records
+    })
 
 @login_required
 def change_password(request):

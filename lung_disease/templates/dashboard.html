@@ -41,10 +41,14 @@
                                     Record #{{ forloop.counter }}
                                 </div>
                                 <div class="card-body">
-                                    <p><strong>Date:</strong> {{ record.created_at|date:"M d, Y" }}</p>
-                                    <p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
-                                    <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
-                                    <!-- Add more fields as needed -->
+                                    <p><strong>Date:</strong> {{ record.uploaded_at|date:"M d, Y" }}</p>
+                                    <p><strong>Name:</strong> {{ record.first_name }} {{ record.last_name }}</p>
+                                    <p><strong>Gender:</strong> {{ record.gender }}</p>
+                                    <p><strong>Age:</strong> {{ record.age }}</p>
+                                    <p><strong>Description:</strong> {{ record.description }}</p>
+                                    <p><strong>Image:</strong><br>
+                                        <img src="{{ record.image.url }}" alt="Uploaded Image" class="img-thumbnail mt-2" style="max-height: 200px;">
+                                    </p>
                                 </div>
                             </div>
                         {% endfor %}
