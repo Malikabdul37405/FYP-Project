@@ -14,6 +14,5 @@ urlpatterns = [
     path('result/', views.result, name='result'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('change-password/', views.change_password, name='change_password'),
-    
-
+    path('delete-record/<int:record_id>/', views.delete_record, name='delete_record'),
 ]

@@ -237,3 +237,9 @@ def change_password(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'change_password.html', {'form': form})
+
+def delete_record(request, record_id):
+    record = get_object_or_404(UploadedImage, id=record_id, user=request.user)
+    if request.method == 'POST':
+        record.delete()
+    return redirect('dashboard')  # Update if your dashboard URL is named differently
