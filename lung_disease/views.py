@@ -88,7 +88,7 @@ def home(request):
 
 # Result Page (Performs AI-based Prediction)
 def result(request):
-    image_id = request.session.get('latest_image_id')  # Retrieve image ID from session
+    image_id = request.session.get('latest_image_id')
     if not image_id:
         messages.error(request, "No image to display. Please upload an image.")
         return redirect('home')
@@ -103,20 +103,24 @@ def result(request):
         messages.error(request, "AI model is missing! Please contact support.")
         return redirect('home')
 
-    # Load and preprocess the uploaded image
     img_path = latest_image.image.path
-    img = image.load_img(img_path, target_size=(224, 224))  # Resize to model's input size
+    img = image.load_img(img_path, target_size=(224, 224))
     img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)  # Convert to batch format
-    img_array /= 255.0  # Normalize the image
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array /= 255.0
 
-    # Make a prediction
     prediction = model.predict(img_array)
-    predicted_class = np.argmax(prediction)  # Get the index of the highest probability
-    predicted_label = CLASS_LABELS[predicted_class]  # Map index to class label
+    predicted_class = np.argmax(prediction)
+    predicted_label = CLASS_LABELS[predicted_class]
 
-    return render(request, 'result.html', {'latest_image': latest_image, 'prediction': predicted_label})
+    # Save the prediction to the model
+    latest_image.prediction = predicted_label
+    latest_image.save()
 
+    return render(request, 'result.html', {
+        'latest_image': latest_image,
+        'prediction': predicted_label
+    })
 
 # User Registration
 def register(request):

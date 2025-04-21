@@ -6,7 +6,7 @@ admin.site.site_title = "Lung Disease App"         # Title for the browser tab
 admin.site.index_title = "Welcome to the Lung Disease App Admin Panel"  # Subtitle on the admin index page
 
 class UploadedImageAdmin(admin.ModelAdmin):
-    list_display = ('user', 'image', 'uploaded_at')  # Fields to display in the admin panel
+    list_display = ('user', 'image', 'uploaded_at', 'prediction')  # Fields to display in the admin panel
     search_fields = ('user__username',)             # Search functionality by username
     list_filter = ('uploaded_at',)                  # Filter by upload date
 

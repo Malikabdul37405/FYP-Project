@@ -40,15 +40,34 @@
                                 <div class="card-header bg-secondary text-white">
                                     Record #{{ forloop.counter }}
                                 </div>
-                                <div class="card-body">
-                                    <p><strong>Date:</strong> {{ record.uploaded_at|date:"M d, Y" }}</p>
-                                    <p><strong>Name:</strong> {{ record.first_name }} {{ record.last_name }}</p>
-                                    <p><strong>Gender:</strong> {{ record.gender }}</p>
-                                    <p><strong>Age:</strong> {{ record.age }}</p>
-                                    <p><strong>Description:</strong> {{ record.description }}</p>
-                                    <p><strong>Image:</strong><br>
-                                        <img src="{{ record.image.url }}" alt="Uploaded Image" class="img-thumbnail mt-2" style="max-height: 200px;">
-                                    </p>
+                                <div class="row g-0">
+                                    <!-- Image section -->
+                                    <div class="col-md-4">
+                                        <img src="{{ record.image.url }}" class="img-fluid rounded-start h-100" alt="Uploaded Image" style="object-fit: cover;">
+                                    </div>
+            
+                                    <!-- Content section -->
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-2">{{ record.first_name }} {{ record.last_name }}</h5>
+                                            <p class="card-text mb-1"><strong>Date:</strong> {{ record.uploaded_at|date:"M d, Y" }}</p>
+                                            <p class="card-text mb-1"><strong>Gender:</strong> {{ record.gender }}</p>
+                                            <p class="card-text mb-1"><strong>Age:</strong> {{ record.age }}</p>
+                                            <p class="card-text mb-1"><strong>Description:</strong> {{ record.description }}</p>
+            
+                                            {% if record.prediction %}
+                                                <p class="card-text mb-1"><strong>AI Diagnosis:</strong> 
+                                                    <span class="badge bg-success">{{ record.prediction }}</span>
+                                                </p>
+                                            {% else %}
+                                                <p class="card-text mb-1"><strong>AI Diagnosis:</strong> 
+                                                    <span class="text-muted">Not available</span>
+                                                </p>
+                                            {% endif %}
+            
+                                            <p class="card-text"><small class="text-body-secondary">Uploaded Time {{ record.uploaded_at|timesince }} ago</small></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
