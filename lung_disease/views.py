@@ -15,8 +15,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib import messages
-from .forms import UserRegisterForm, ImageUploadForm
-from .models import UploadedImage, ContactInfo, Blog
+from .forms import UserRegisterForm, ImageUploadForm, DoctorRegistrationForm
+from .models import UploadedImage, ContactInfo, Blog, DoctorProfile
 from django.conf import settings
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
@@ -269,3 +269,4 @@ def delete_record(request, record_id):
     if request.method == 'POST':
         record.delete()
     return redirect('dashboard') 
+    
