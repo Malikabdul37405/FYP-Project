@@ -8,6 +8,8 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -215,7 +217,7 @@ def contact_view(request):
         )
     return render(request, 'contact.html', {'contact_info': contact_info})
 
-@login_required
+"""@login_required
 def dashboard(request):
     # Get all patient records uploaded by the currently logged-in user
     patient_records = UploadedImage.objects.filter(user=request.user).order_by('-uploaded_at')
@@ -228,18 +230,42 @@ def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('dashboard')
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return HttpResponseRedirect(reverse('dashboard') + '?success=1')
         else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordChangeForm(user=request.user)
-    return render(request, 'change_password.html', {'form': form})
+            error_message = "Password change failed. Please check your inputs."
+            return HttpResponseRedirect(reverse('dashboard') + f'?error={error_message}')"""
+
+@login_required
+def dashboard(request):
+    patient_records = UploadedImage.objects.filter(user=request.user)
+    form = PasswordChangeForm(user=request.user)
+
+    return render(request, 'dashboard.html', {
+        'patient_records': patient_records,
+        'form': form,
+    })
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect(reverse('dashboard') + '?success=1')
+        else:
+            from .models import UploadedImage
+            patient_records = UploadedImage.objects.filter(user=request.user)
+            return render(request, 'dashboard.html', {
+                'patient_records': patient_records,
+                'form': form
+            })
+    return redirect('dashboard')
 
 def delete_record(request, record_id):
     record = get_object_or_404(UploadedImage, id=record_id, user=request.user)
     if request.method == 'POST':
         record.delete()
-    return redirect('dashboard')  # Update if your dashboard URL is named differently
+    return redirect('dashboard') 
