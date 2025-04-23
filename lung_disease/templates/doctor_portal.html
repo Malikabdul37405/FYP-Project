@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Welcome, Dr. {{ doctor.full_name }}</h2>
+<p>Status: {% if doctor.verified %}<span style="color:green">Verified</span>{% else %}<span style="color:red">Pending Verification</span>{% endif %}</p>
+
+<!-- You can show different sections here based on doctor.verified -->
+{% if doctor.verified %}
+    <p>Here are your tools and functionalities...</p>
+{% else %}
+    <p>Your account is awaiting admin verification. You will be notified once it's approved.</p>
+{% endif %}
+{% endblock %}

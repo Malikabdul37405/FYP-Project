@@ -155,17 +155,52 @@
                 width: 100%; /* Make input fields full width on small screens */
             }
         }
+
+        .user-type-switch {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .user-type-switch span {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0 10px;
+            color: #fff;
+            opacity: 0.6;
+        }
+
+        .user-type-switch span.active {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* file input text color fix */
+        input[type="file"]::file-selector-button {
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 15px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="center-container">
-        <!-- Register Form -->
         <div class="wrapper">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h1>Register</h1>
 
-                <!-- First Name & Last Name Fields -->
+                <!-- Toggle between Patient / Doctor -->
+                
+                <div class="user-type-switch">
+                    <span id="patientSwitch" class="active" onclick="setUserType('patient')">Patient</span> /
+                    <span id="doctorSwitch" onclick="setUserType('doctor')">Doctor</span>
+                </div>
+
+                <!-- First Name & Last Name -->
                 <div class="input-box-row">
                     <div class="input-box">
                         <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
@@ -175,28 +210,58 @@
                     </div>
                 </div>
 
-                <!-- Username Field -->
+                <!-- Username -->
                 <div class="input-box">
                     <input type="text" id="username" name="username" placeholder="Enter your username" required>
                     <i class='bx bxs-user'></i>
                 </div>
 
-                <!-- Email Field -->
+                <!-- Email -->
                 <div class="input-box">
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     <i class='bx bxs-envelope'></i>
                 </div>
 
-                <!-- Password Field -->
+                <!-- Password -->
                 <div class="input-box">
                     <input type="password" id="password1" name="password1" placeholder="Enter your password" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
 
-                <!-- Confirm Password Field -->
+                <!-- Confirm Password -->
                 <div class="input-box">
                     <input type="password" id="password2" name="password2" placeholder="Confirm your password" required>
                     <i class='bx bxs-lock-alt'></i>
+                </div>
+
+                <!-- Hidden input to submit user type -->
+                <input type="hidden" name="user_type" id="user_type_input" value="patient">
+
+                <!-- Doctor-Only Fields -->
+                <div id="doctor-fields" style="display: none;">
+                    <!-- Full Name -->
+                    <div class="input-box">
+                        <input type="text" id="full_name" name="full_name" placeholder="Full Name (e.g. Dr. John Doe)">
+                        <i class='bx bxs-id-card'></i>
+                    </div>
+
+                    <!-- Specialization -->
+                    <div class="input-box">
+                        <input type="text" id="specialization" name="specialization" placeholder="Specialization (e.g. Pulmonologist)">
+                        <i class='bx bx-capsule'></i>
+                    </div>
+
+                    <!-- License Number -->
+                    <div class="input-box">
+                        <input type="text" id="license_number" name="license_number" placeholder="License Number">
+                        <i class='bx bxs-file'></i>
+                    </div>
+
+                    <!-- Upload Document -->
+                    <div class="input-box">
+                        <input type="file" id="documents" name="documents">
+                        <i class='bx bxs-cloud-upload'></i>
+                    </div>
                 </div>
 
                 <!-- Submit Button -->
@@ -204,12 +269,35 @@
 
                 <!-- Link to Login -->
                 <div class="register-link">
-                    <p>
-                        Already have an account? <a href="{% url 'login' %}">Login here</a>
-                    </p>
+                    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        function setUserType(type) {
+            const doctorFields = document.getElementById("doctor-fields");
+            const userTypeInput = document.getElementById("user_type_input");
+
+            if (type === 'doctor') {
+                doctorFields.style.display = 'block';
+                userTypeInput.value = 'doctor';
+                document.getElementById("doctorSwitch").classList.add("active");
+                document.getElementById("patientSwitch").classList.remove("active");
+            } else {
+                doctorFields.style.display = 'none';
+                userTypeInput.value = 'patient';
+                document.getElementById("patientSwitch").classList.add("active");
+                document.getElementById("doctorSwitch").classList.remove("active");
+            }
+        }
+
+        // Restore user type on page reload (if needed)
+        window.onload = function () {
+            const selectedType = "{{ request.POST.user_type|default:'patient' }}";
+            setUserType(selectedType);
+        }
+    </script>
 </body>
 </html>

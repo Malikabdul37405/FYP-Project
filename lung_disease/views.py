@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib import messages
-from .forms import UserRegisterForm, ImageUploadForm, DoctorRegistrationForm
+from .forms import UserRegisterForm, ImageUploadForm, DoctorRegisterForm
 from .models import UploadedImage, ContactInfo, Blog, DoctorProfile
 from django.conf import settings
 from tensorflow.keras.models import load_model
@@ -269,4 +269,20 @@ def delete_record(request, record_id):
     if request.method == 'POST':
         record.delete()
     return redirect('dashboard') 
-    
+
+def doctor_register(request):
+    if request.method == 'POST':
+        form = DoctorRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, 'registration/pending_verification.html')
+    else:
+        form = DoctorRegistrationForm()
+    return render(request, 'registration/doctor_register.html', {'form': form})
+
+@login_required
+def doctor_dashboard(request):
+    doctor = DoctorProfile.objects.get(user=request.user)
+    if not doctor.verified:
+        return render(request, 'doctor/unverified.html')
+    return render(request, 'doctor/dashboard.html', {'doctor': doctor})

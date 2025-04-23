@@ -16,23 +16,26 @@ class ImageUploadForm(forms.ModelForm):
         model = UploadedImage
         fields = ['first_name', 'last_name', 'gender', 'age', 'description', 'image']
 
-class DoctorRegistrationForm(forms.ModelForm):
-    username = forms.CharField()
+class DoctorRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    full_name = forms.CharField(max_length=255)
+    specialization = forms.CharField(max_length=255)
+    license_number = forms.CharField(max_length=100)
+    documents = forms.FileField(required=False)
 
     class Meta:
-        model = DoctorProfile
-        fields = ['full_name', 'specialization', 'license_number', 'documents']
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
     def save(self, commit=True):
-        user = User.objects.create_user(
-            username=self.cleaned_data['username'],
-            email=self.cleaned_data['email'],
-            password=self.cleaned_data['password']
+        user = super().save(commit)
+        doctor_profile = DoctorProfile(
+            user=user,
+            full_name=self.cleaned_data['full_name'],
+            specialization=self.cleaned_data['specialization'],
+            license_number=self.cleaned_data['license_number'],
+            documents=self.cleaned_data.get('documents')
         )
-        doctor = super().save(commit=False)
-        doctor.user = user
         if commit:
-            doctor.save()
-        return doctor
+            doctor_profile.save()
+        return user
