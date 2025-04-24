@@ -184,6 +184,36 @@
             padding: 5px 15px;
             cursor: pointer;
         }
+
+        .ribbon-error {
+        background-color: #dc3545;
+        color: white;
+        font-size: 0.75rem;
+        padding: 5px 12px;
+        border-radius: 8px 8px 8px 0;
+        display: inline-block;
+        position: absolute;
+        top: -32px;
+        left: 15px;
+        z-index: 2;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .ribbon-error::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 8px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #dc3545;
+    }
+
+    .input-box {
+        position: relative;
+    }
     </style>
 </head>
 <body>
@@ -211,26 +241,59 @@
                 </div>
 
                 <!-- Username -->
-                <div class="input-box">
+                <!--div class="input-box">
                     <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    <i class='bx bxs-user'></i>
+                </div-->
+                <!-- Username -->
+                <div class="input-box">
+                    {% if form.username.errors %}
+                        <div class="ribbon-error">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                    <input type="text" id="username" name="username" placeholder="Enter your username"
+                           class="{% if form.username.errors %}is-invalid{% endif %}" required>
                     <i class='bx bxs-user'></i>
                 </div>
 
                 <!-- Email -->
-                <div class="input-box">
+                <!--div class="input-box">
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <i class='bx bxs-envelope'></i>
+                </div-->
+                <div class="input-box">
+                    {% if form.email.errors %}
+                        <div class="ribbon-error">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                    <input type="email" id="email" name="email" placeholder="Enter your email"
+                           class="{% if form.email.errors %}is-invalid{% endif %}" required>
                     <i class='bx bxs-envelope'></i>
                 </div>
 
                 <!-- Password -->
-                <div class="input-box">
+                <!--div class="input-box">
                     <input type="password" id="password1" name="password1" placeholder="Enter your password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div-->
+                <div class="input-box">
+                    {% if form.password1.errors %}
+                        <div class="ribbon-error">{{ form.password1.errors.0 }}</div>
+                    {% endif %}
+                    <input type="password" id="password1" name="password1" placeholder="Enter your password"
+                           class="{% if form.password1.errors %}is-invalid{% endif %}" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
 
                 <!-- Confirm Password -->
-                <div class="input-box">
+                <!--div class="input-box">
                     <input type="password" id="password2" name="password2" placeholder="Confirm your password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div-->
+                <div class="input-box">
+                    {% if form.password2.errors %}
+                        <div class="ribbon-error">{{ form.password2.errors.0 }}</div>
+                    {% endif %}
+                    <input type="password" id="password2" name="password2" placeholder="Confirm your password"
+                           class="{% if form.password2.errors %}is-invalid{% endif %}" required>
                     <i class='bx bxs-lock-alt'></i>
                 </div>
 
@@ -297,6 +360,21 @@
         window.onload = function () {
             const selectedType = "{{ request.POST.user_type|default:'patient' }}";
             setUserType(selectedType);
+        }
+        // Auto-hide error ribbons after 2 seconds
+        window.onload = function () {
+            // Restore selected user type
+            const selectedType = "{{ request.POST.user_type|default:'patient' }}";
+            setUserType(selectedType);
+
+            // Delay and remove error ribbons
+            setTimeout(() => {
+                document.querySelectorAll('.ribbon-error').forEach(el => {
+                    el.style.transition = "opacity 0.5s ease";
+                    el.style.opacity = 0;
+                    setTimeout(() => el.remove(), 500); // remove from DOM after fade out
+                });
+            }, 9000);
         }
     </script>
 </body>

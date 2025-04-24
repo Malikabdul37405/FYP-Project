@@ -1,0 +1,16 @@
+{% load static %}
+{% block content %}
+<div style="text-align:center; padding: 50px 20px;">
+    <h2>Welcome, Doctor!</h2>
+    <p style="color: #b00; font-size: 1.2em;">🚫 Your account is not yet verified.</p>
+    <p>Thank you for registering as a doctor on our platform.</p>
+    <p>
+        Our admin team is currently reviewing your information and documents.
+        Once approved, you'll gain access to the doctor portal.
+    </p>
+    <p>Please check back later or contact support if your verification takes too long.</p>
+    <p>
+        <img src="{% static 'images/pending_verification.gif' %}" alt="Verifying..." style="width: 80px; margin-top: 20px;">
+    </p>
+</div>
+{% endblock %}

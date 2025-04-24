@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth.forms import PasswordChangeForm
@@ -124,8 +125,8 @@ def result(request):
         'prediction': predicted_label
     })
 
-# User Registration
-def register(request):
+# User Registration Orignal
+"""def register(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -157,10 +158,29 @@ def register(request):
         messages.success(request, "Registration successful! Welcome!")
         return redirect('login')
 
-    return render(request, 'register.html')
+    return render(request, 'register.html')"""
 
-# User Login
-def user_login(request):
+def register(request):
+    if request.method == 'POST':
+        user_type = request.POST.get('user_type')
+
+        if user_type == 'doctor':
+            form = DoctorRegisterForm(request.POST, request.FILES)
+        else:
+            form = UserRegisterForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful! Welcome!")
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+
+    return render(request, 'register.html', {'form': form})
+
+# User Login Orignal
+"""def user_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -173,8 +193,52 @@ def user_login(request):
 
         messages.error(request, "Invalid username or password.")
     
-    return render(request, 'login.html', {'form': AuthenticationForm()})
+    return render(request, 'login.html', {'form': AuthenticationForm()})"""
 
+"""def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, "Login successful!")
+
+            try:
+                # Check if user is a doctor
+                doctor_profile = DoctorProfile.objects.get(user=user)
+                if doctor_profile.verified:
+                    return redirect('doctor_dashboard')
+                else:
+                    return render(request, 'doctor/unverified.html')
+            except DoctorProfile.DoesNotExist:
+                # Not a doctor, redirect to patient/home dashboard
+                next_url = request.GET.get('next')
+                return redirect(next_url if next_url else 'home')
+
+        messages.error(request, "Invalid username or password.")
+
+    return render(request, 'login.html', {'form': AuthenticationForm()})"""
+
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, "Login successful!")
+
+            next_url = request.GET.get('next')
+            # 🧠 Doctor check here
+            if hasattr(user, 'doctorprofile'):
+                return redirect('doctor_dashboard')
+
+            return redirect(next_url if next_url else 'home')
+        else:
+            messages.error(request, "Invalid username or password.")
+            return redirect('login')  # 🔁 Redirect after failed POST
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
 
 # User Logout
 def user_logout(request):
@@ -270,19 +334,9 @@ def delete_record(request, record_id):
         record.delete()
     return redirect('dashboard') 
 
-def doctor_register(request):
-    if request.method == 'POST':
-        form = DoctorRegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return render(request, 'registration/pending_verification.html')
-    else:
-        form = DoctorRegistrationForm()
-    return render(request, 'registration/doctor_register.html', {'form': form})
-
 @login_required
 def doctor_dashboard(request):
     doctor = DoctorProfile.objects.get(user=request.user)
     if not doctor.verified:
         return render(request, 'doctor/unverified.html')
-    return render(request, 'doctor/dashboard.html', {'doctor': doctor})
+    return render(request, 'doctor/doctor_portal.html', {'doctor': doctor})
