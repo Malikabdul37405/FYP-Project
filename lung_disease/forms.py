@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UploadedImage, DoctorProfile
+from .models import PatientProfile, DoctorProfile
 from django.core.exceptions import ValidationError
 
 class UserRegisterForm(UserCreationForm):
@@ -33,7 +33,7 @@ class UserRegisterForm(UserCreationForm):
 
 class ImageUploadForm(forms.ModelForm):
     class Meta:
-        model = UploadedImage
+        model = PatientProfile
         fields = ['first_name', 'last_name', 'gender', 'age', 'description', 'image']
 
 class DoctorRegisterForm(UserCreationForm):
@@ -77,3 +77,14 @@ class DoctorRegisterForm(UserCreationForm):
         if commit:
             doctor_profile.save()
         return user
+
+class DoctorAssistanceRequestForm(forms.Form):
+    report = forms.ModelChoiceField(
+        queryset=PatientProfile.objects.none(),
+        label="Select a report to request assistance on",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['report'].queryset = PatientProfile.objects.filter(user=user)

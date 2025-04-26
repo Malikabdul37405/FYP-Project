@@ -16,8 +16,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib import messages
-from .forms import UserRegisterForm, ImageUploadForm, DoctorRegisterForm
-from .models import UploadedImage, ContactInfo, Blog, DoctorProfile
+from .forms import UserRegisterForm, ImageUploadForm, DoctorRegisterForm, DoctorAssistanceRequestForm
+from .models import PatientProfile, ContactInfo, Blog, DoctorProfile
 from django.conf import settings
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
@@ -97,8 +97,8 @@ def result(request):
         return redirect('home')
 
     try:
-        latest_image = UploadedImage.objects.get(id=image_id)
-    except UploadedImage.DoesNotExist:
+        latest_image = PatientProfile.objects.get(id=image_id)
+    except PatientProfile.DoesNotExist:
         messages.error(request, "Image not found.")
         return redirect('home')
 
@@ -284,7 +284,7 @@ def contact_view(request):
 """@login_required
 def dashboard(request):
     # Get all patient records uploaded by the currently logged-in user
-    patient_records = UploadedImage.objects.filter(user=request.user).order_by('-uploaded_at')
+    patient_records = PatientProfile.objects.filter(user=request.user).order_by('-uploaded_at')
     return render(request, 'dashboard.html', {
         'patient_records': patient_records
     })
@@ -303,7 +303,7 @@ def change_password(request):
 
 @login_required
 def dashboard(request):
-    patient_records = UploadedImage.objects.filter(user=request.user)
+    patient_records = PatientProfile.objects.filter(user=request.user)
     form = PasswordChangeForm(user=request.user)
 
     return render(request, 'dashboard.html', {
@@ -320,8 +320,8 @@ def change_password(request):
             update_session_auth_hash(request, form.user)
             return redirect(reverse('dashboard') + '?success=1')
         else:
-            from .models import UploadedImage
-            patient_records = UploadedImage.objects.filter(user=request.user)
+            from .models import PatientProfile
+            patient_records = PatientProfile.objects.filter(user=request.user)
             return render(request, 'dashboard.html', {
                 'patient_records': patient_records,
                 'form': form
@@ -329,7 +329,7 @@ def change_password(request):
     return redirect('dashboard')
 
 def delete_record(request, record_id):
-    record = get_object_or_404(UploadedImage, id=record_id, user=request.user)
+    record = get_object_or_404(PatientProfile, id=record_id, user=request.user)
     if request.method == 'POST':
         record.delete()
     return redirect('dashboard') 
@@ -340,3 +340,18 @@ def doctor_dashboard(request):
     if not doctor.verified:
         return render(request, 'doctor/unverified.html')
     return render(request, 'doctor/doctor_portal.html', {'doctor': doctor})
+
+@login_required
+def request_doctor_assistance(request):
+    if request.method == 'POST':
+        form = DoctorAssistanceRequestForm(request.user, request.POST)
+        if form.is_valid():
+            report = form.cleaned_data['report']
+            report.needs_doctor_assistance = True
+            report.save()
+            messages.success(request, "Doctor assistance requested successfully.")
+            return redirect('dashboard')  # or wherever you want to send user
+    else:
+        form = DoctorAssistanceRequestForm(request.user)
+
+    return render(request, 'patient/request_assistance.html', {'form': form})

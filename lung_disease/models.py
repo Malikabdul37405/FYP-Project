@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
-class UploadedImage(models.Model):
+class PatientProfile(models.Model):
     GENDER_CHOICES = [
         ('Male', 'Male'),
         ('Female', 'Female'),
@@ -18,6 +18,9 @@ class UploadedImage(models.Model):
     image = models.ImageField('Image',upload_to='uploads/') 
     uploaded_at = models.DateTimeField('Uploaded At',auto_now_add=True)
     prediction = models.CharField('Prediction Result', max_length=100, blank=True, null=True)
+    reviewed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='reviews')
+    doctor_comment = models.TextField(blank=True, null=True)
+    needs_doctor_assistance = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username} - {self.image.name}"

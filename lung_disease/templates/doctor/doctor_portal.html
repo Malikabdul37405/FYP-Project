@@ -1,12 +1,33 @@
-{% extends 'base.html' %}
+{% extends 'doctor_base.html' %}
 
 {% block content %}
 <h2>Welcome, Dr. {{ doctor.full_name }}</h2>
-<p>Status: {% if doctor.verified %}<span style="color:green">Verified</span>{% else %}<span style="color:red">Pending Verification</span>{% endif %}</p>
+<p>Status: 
+    {% if doctor.verified %}
+        <span class="text-success">Verified</span>
+    {% else %}
+        <span class="text-danger">Pending Verification</span>
+    {% endif %}
+</p>
 
-<!-- You can show different sections here based on doctor.verified -->
 {% if doctor.verified %}
-    <p>Here are your tools and functionalities...</p>
+    <h4>Patient Reports:</h4>
+    {% for report in patient_reports %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Report by {{ report.user.username }}</h5>
+                <p><strong>Prediction:</strong> {{ report.prediction }}</p>
+                <a href="{{ report.image.url }}" target="_blank">View Image</a>
+                
+                <!-- Later: Button to give assistance -->
+                <form action="{% url 'give_assistance' report.id %}" method="post" class="mt-2">
+                    {% csrf_token %}
+                    <textarea name="doctor_comment" class="form-control" placeholder="Write your advice..."></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">Submit Advice</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
 {% else %}
     <p>Your account is awaiting admin verification. You will be notified once it's approved.</p>
 {% endif %}
