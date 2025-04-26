@@ -350,7 +350,7 @@ def request_doctor_assistance(request):
             report.needs_doctor_assistance = True
             report.save()
             messages.success(request, "Doctor assistance requested successfully.")
-            return redirect('dashboard')  # or wherever you want to send user
+            return redirect('home')  # or wherever you want to send user
     else:
         form = DoctorAssistanceRequestForm(request.user)
 

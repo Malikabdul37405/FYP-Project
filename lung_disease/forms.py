@@ -81,10 +81,15 @@ class DoctorRegisterForm(UserCreationForm):
 class DoctorAssistanceRequestForm(forms.Form):
     report = forms.ModelChoiceField(
         queryset=PatientProfile.objects.none(),
-        label="Select a report to request assistance on",
-        widget=forms.Select(attrs={'class': 'form-select'})
+        label="Select a Report",
+        widget=forms.RadioSelect  # Styled in the template
+    )
+    doctor = forms.ModelChoiceField(
+        queryset=DoctorProfile.objects.filter(verified=True),
+        label="Choose a Doctor",
+        widget=forms.RadioSelect
     )
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['report'].queryset = PatientProfile.objects.filter(user=user)
+        self.fields['report'].queryset = PatientProfile.objects.filter(user=user, needs_doctor_assistance=False)

@@ -2,10 +2,95 @@
 {% block content %}
 <div class="container mt-5">
     <h3>Request Doctor Assistance</h3>
-    <form method="post">
+
+    {% if form.fields.report.queryset %}
+    <form method="post" id="assistanceForm">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Submit Request</button>
+
+        <div class="mb-4">
+            <h5>Select a Report:</h5>
+            <div class="row">
+                {% for report in form.fields.report.queryset %}
+                <div class="col-md-4 mb-3">
+                    <label class="card h-100">
+                        <input type="radio" name="report" value="{{ report.id }}" style="display: none;">
+                        <img src="{{ report.image.url }}" class="card-img-top" alt="Report Image" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ report.first_name }} {{ report.last_name }}</h5>
+                            <p class="card-text">{{ report.prediction|default:"No prediction yet" }}</p>
+                            <p class="card-text">{{ record.uploaded_at|date:"M d, Y" }}</p>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h5>Select a Doctor:</h5>
+            <div class="row">
+                {% for doctor in form.fields.doctor.queryset %}
+                <div class="col-md-4 mb-3">
+                    <label class="card h-100">
+                        <input type="radio" name="doctor" value="{{ doctor.id }}" style="display: none;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ doctor.full_name }}</h5>
+                            <p class="card-text">{{ doctor.specialization }}</p>
+                        </div>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit Request</button>
+        </div>
     </form>
+    {% else %}
+    <div class="alert alert-warning">
+        You have no reports available for doctor assistance. Please upload a new report.
+    </div>
+    {% endif %}
 </div>
+
+<script>
+    const form = document.getElementById('assistanceForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (form) {
+        form.addEventListener('change', function () {
+            const reportSelected = document.querySelector('input[name="report"]:checked');
+            const doctorSelected = document.querySelector('input[name="doctor"]:checked');
+
+            submitBtn.disabled = !(reportSelected && doctorSelected);
+        });
+
+        const reportCards = document.querySelectorAll('input[name="report"]');
+        const doctorCards = document.querySelectorAll('input[name="doctor"]');
+
+        reportCards.forEach(input => {
+            input.closest('label.card').addEventListener('click', () => {
+                reportCards.forEach(i => i.closest('label.card').classList.remove('border-primary'));
+                input.checked = true;
+                input.closest('label.card').classList.add('border-primary');
+
+                // 🔥 Dispatch change event
+                form.dispatchEvent(new Event('change'));
+            });
+        });
+
+        doctorCards.forEach(input => {
+            input.closest('label.card').addEventListener('click', () => {
+                doctorCards.forEach(i => i.closest('label.card').classList.remove('border-primary'));
+                input.checked = true;
+                input.closest('label.card').classList.add('border-primary');
+
+                // 🔥 Dispatch change event
+                form.dispatchEvent(new Event('change'));
+            });
+        });
+    }
+</script>
+
 {% endblock %}
