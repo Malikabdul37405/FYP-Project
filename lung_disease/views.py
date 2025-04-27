@@ -86,7 +86,7 @@ def home(request):
     else:
         form = ImageUploadForm()
 
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'patient/home.html', {'form': form})
 
 
 # Result Page (Performs AI-based Prediction)
@@ -120,7 +120,7 @@ def result(request):
     latest_image.prediction = predicted_label
     latest_image.save()
 
-    return render(request, 'result.html', {
+    return render(request, 'patient/result.html', {
         'latest_image': latest_image,
         'prediction': predicted_label
     })
@@ -247,29 +247,16 @@ def user_logout(request):
 
 # Blog Pages
 def blog(request):
-    return render(request, 'blog.html', {'blogs': Blog.objects.all()})
+    return render(request, 'patient/blog.html', {'blogs': Blog.objects.all()})
 
 
 def blog_detail(request, blog_id):
-    return render(request, 'blog_detail.html', {'blog': get_object_or_404(Blog, id=blog_id)})
+    return render(request, 'patient/blog_detail.html', {'blog': get_object_or_404(Blog, id=blog_id)})
 
 
 # Contact Page
+
 def contact(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-        ContactInfo.objects.create(address=name, phone=message, email=email)
-
-        messages.success(request, "Thank you for reaching out!")
-        return redirect('contact')
-
-    return render(request, 'contact.html')
-
-
-# Contact Info Display
-def contact_view(request):
     contact_info = ContactInfo.objects.first()
     if not contact_info:
         contact_info = ContactInfo.objects.create(
@@ -277,7 +264,28 @@ def contact_view(request):
             phone="+92-331-6262-363",
             email="default@example.com"
         )
-    return render(request, 'contact.html', {'contact_info': contact_info})
+        
+    if request.method == "POST":
+        name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        # Create the message
+        contact_message = ContactMessage(
+            full_name=name,
+            email=email,
+            message=message
+        )
+        
+        if request.user.is_authenticated:
+            contact_message.user = request.user 
+
+        contact_message.save()
+
+        messages.success(request, "Thank you for reaching out!")
+        return redirect('contact')
+
+    return render(request, 'patient/contact.html', {'contact_info': contact_info})
 
 # Doctor Blog Pages
 def doctor_blog(request):
@@ -345,7 +353,7 @@ def dashboard(request):
     patient_records = PatientProfile.objects.filter(user=request.user)
     form = PasswordChangeForm(user=request.user)
 
-    return render(request, 'dashboard.html', {
+    return render(request, 'patient/dashboard.html', {
         'patient_records': patient_records,
         'form': form,
     })
@@ -361,7 +369,7 @@ def change_password(request):
         else:
             from .models import PatientProfile
             patient_records = PatientProfile.objects.filter(user=request.user)
-            return render(request, 'dashboard.html', {
+            return render(request, 'patient/dashboard.html', {
                 'patient_records': patient_records,
                 'form': form
             })

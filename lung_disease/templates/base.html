@@ -200,7 +200,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="/patient/home/">
                 <img src="{% static 'images/Lungs_Logo1.png' %}" alt="Lung Disease App Logo" style="height: 50px; width: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -208,11 +208,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/patient/home/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/assistance/">Doctor Assistance</a></li>
                     <li class="nav-item"><a class="nav-link" href="/responses/">Doctor Responses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/blog/">Blogs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact/">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/patient/blog/">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/patient/contact/">Contact Us</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
@@ -274,10 +274,12 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/blog/">Blogs</a></li>
-                        <li><a href="/contact/">Contact Us</a></li>
-                        <!--li><a href="/login/">Log in</a></li-->
+                        <li><a href="/patient/dashboard/">Dashboard</a></li>
+                        <li><a href="/patient/home/">Home</a></li>
+                        <li><a href="/assistance/">Doctor Assistance</a></li>
+                        <li><a href="/responses/">Doctor Responses</a></li>
+                        <li><a href="/patient/blog/">Blogs</a></li>
+                        <li><a href="/patient/contact/">Contact Us</a></li>
                     </ul>
                 </div>
     
