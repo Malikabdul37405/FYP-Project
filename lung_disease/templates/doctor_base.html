@@ -204,7 +204,7 @@
             <div class="collapse navbar-collapse" id="doctorNavbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="{% url 'doctor_portal' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'doctor_blog' %}">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -245,8 +245,9 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="{% url 'doctor_portal' %}">Dashboard</a></li>
-                        <li><a href="{% url 'blog' %}">Blogs</a></li>
+                        <li><a href="{% url 'doctor_portal' %}">Home</a></li>
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="{% url 'doctor_blog' %}">Blogs</a></li>
                         <li><a href="{% url 'contact' %}">Contact</a></li>
                     </ul>
                 </div>

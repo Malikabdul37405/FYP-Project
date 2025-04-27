@@ -1,0 +1,49 @@
+{% extends 'doctor_base.html' %}
+
+{% block title %}Blog - Lung Disease App{% endblock %}
+
+{% block content %}
+<!-- Inline Styling -->
+<style>
+    .card:hover {
+        transform: scale(1.03); /* Slight zoom effect */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    }
+    .card-title a:hover {
+        color: #007bff; /* Color transition on hover */
+    }
+    .card-img-top {
+        height: 180px;
+        object-fit: cover; /* Ensures the image scales nicely without distortion */
+    }
+</style>
+
+<div class="container mt-5">
+    <!-- Section Heading -->
+    <div class="text-center">
+        <h1 class="display-4 fw-bold" style="color: #007bff;">Blogs</h1>
+        <p class="lead text-muted" style="font-size: 2.25rem;">Discover insights, research, and updates in lung disease and healthcare.</p>
+        <hr class="mt-4 mb-5" style="width: 60px; height: 3px; background-color: #007bff; margin: 0 auto; border: none;">
+    </div>
+
+    <!-- Blog List -->
+    <ul class="list-unstyled row">
+        {% for blog in blogs %}
+        <li class="mb-4 col-md-4 d-flex">
+            <div class="card shadow-sm" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <img src="{{ blog.image.url }}" class="card-img-top" alt="{{ blog.title }}">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">
+                        <a href="{% url 'doctor_blog_detail' blog.id %}" class="text-decoration-none text-dark" style="transition: color 0.3s;">{{ blog.title }}</a>
+                    </h5>
+                    <p class="card-text text-muted mt-2">{{ blog.content|slice:":150"|safe }}...</p>  <!-- Display a snippet of the content -->
+                </div>
+                <div class="card-footer bg-white border-0 text-end">
+                    <a href="{% url 'doctor_blog_detail' blog.id %}" class="btn btn-sm btn-outline-primary">Continue Reading</a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

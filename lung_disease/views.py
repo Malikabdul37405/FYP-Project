@@ -279,6 +279,14 @@ def contact_view(request):
         )
     return render(request, 'contact.html', {'contact_info': contact_info})
 
+# Doctor Blog Pages
+def doctor_blog(request):
+    return render(request, 'doctor/doctor_blog.html', {'blogs': Blog.objects.all()})
+
+
+def doctor_blog_detail(request, blog_id):
+    return render(request, 'doctor/doctor_blog_detail.html', {'blog': get_object_or_404(Blog, id=blog_id)})
+
 """@login_required
 def dashboard(request):
     # Get all patient records uploaded by the currently logged-in user
