@@ -17,7 +17,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib import messages
 from .forms import UserRegisterForm, ImageUploadForm, DoctorRegisterForm, DoctorAssistanceRequestForm
-from .models import PatientProfile, ContactInfo, Blog, DoctorProfile
+from .models import PatientProfile, ContactInfo, Blog, DoctorProfile, ContactMessage
 from django.conf import settings
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
@@ -289,19 +289,6 @@ def doctor_blog_detail(request, blog_id):
 
 # Doctor Contact Page
 def doctor_contact(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        message = request.POST.get('message')
-        ContactInfo.objects.create(address=name, phone=message, email=email)
-
-        messages.success(request, "Thank you for reaching out!")
-        return redirect('doctor_contact')
-
-    return render(request, 'doctor/doctor_contact.html')
-
-
-def doctor_contact_view(request):
     contact_info = ContactInfo.objects.first()
     if not contact_info:
         contact_info = ContactInfo.objects.create(
@@ -309,7 +296,29 @@ def doctor_contact_view(request):
             phone="+92-331-6262-363",
             email="default@example.com"
         )
+        
+    if request.method == "POST":
+        name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        # Create the message
+        contact_message = ContactMessage(
+            full_name=name,
+            email=email,
+            message=message
+        )
+        
+        if request.user.is_authenticated:
+            contact_message.user = request.user 
+
+        contact_message.save()
+
+        messages.success(request, "Thank you for reaching out!")
+        return redirect('doctor_contact')
+
     return render(request, 'doctor/doctor_contact.html', {'contact_info': contact_info})
+
 
 """@login_required
 def dashboard(request):

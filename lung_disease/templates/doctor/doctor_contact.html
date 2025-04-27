@@ -41,7 +41,7 @@ Contact Us
             <div class="col-md-6">
                 <div class="card p-4 shadow rounded" style="background: #ffffff; color: #000000;">
                     <h4 class="text-center mb-4 fw-bold">Send Message</h4>
-                    <form method="post" action="{% url 'doctor_contact_submit' %}">
+                    <form method="post" action="{% url 'doctor_contact' %}">
                         {% csrf_token %}
                         
                         <!-- Full Name -->
