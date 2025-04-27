@@ -1,81 +1,148 @@
 {% extends 'doctor_base.html' %}
 
 {% block content %}
-<div class="container py-4">
+<div class="container py-5">
     <div class="text-center mb-5">
-        <h2>Welcome, Dr. {{ doctor.full_name }}</h2>
-        <p class="lead">
-            Status:
+        <h1 class="fw-bold mb-2">Welcome, Dr. {{ doctor.full_name }}</h1>
+        <div class="card-body">
             {% if doctor.verified %}
-                <span class="badge bg-success">Verified</span>
+                <i class="fas fa-user-shield fa-2x text-info mb-3"></i>
+                <h5 class="card-title mb-1">Account Status</h5>
+                <h4 class="fw-bold text-success">Verified</h4>
             {% else %}
-                <span class="badge bg-danger">Pending Verification</span>
+                <i class="fas fa-user-clock fa-2x text-warning mb-3"></i>
+                <h5 class="card-title mb-1">Account Status</h5>
+                <h4 class="fw-bold text-warning">Pending</h4>
             {% endif %}
-        </p>
+        </div>
+    </div>
+    <div id="card_display" class="row justify-content-center g-4 mb-5">
+        <!-- Pending Requests Card -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0" style="width: 250px; cursor: pointer;" onclick="showSection('pending-section')">
+                <div class="card-body text-center">
+                    <i class="fas fa-hourglass-half fa-2x text-primary mb-3"></i>
+                    <h5 class="card-title mb-1">Pending Requests</h5>
+                    <h3 class="fw-bold">{{ pending_reports|length }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviewed Reports Card -->
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0" style="width: 250px; cursor: pointer;" onclick="showSection('reviewed-section')">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+                    <h5 class="card-title mb-1">Reviewed Reports</h5>
+                    <h3 class="fw-bold">{{ reviewed_reports|length }}</h3>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% if doctor.verified %}
-        <section class="mb-5">
-            <h3 class="mb-4 border-bottom pb-2">📝 Pending Assistance Requests</h3>
+    
+    <!-- Pending Requests Section -->
+    <section id="pending-section" style="display: none;">
+        <div class="mb-4 text-center">
+            <h3 class="fw-bold">📝 Pending Assistance Requests</h3>
+            <p class="fw-bold">Assist patients by reviewing their submitted reports.</p>
+        </div>
+        <div class="d-flex justify-content-start mb-4">
+            <button class="btn btn-outline-secondary btn-sm" onclick="backToPortal()">
+                <i class="fas fa-arrow-left me-2"></i> Back to Portal
+            </button>
+        </div>
+        {% if pending_reports %}
+            <div class="row g-4">
+                {% for report in pending_reports %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100 border-0">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">{{ report.first_name }} {{ report.last_name }}</h5>
+                            <p class="mb-1"><strong>Gender:</strong> {{ report.gender }}</p>
+                            <p class="mb-1"><strong>Age:</strong> {{ report.age }}</p>
+                            <p class="mb-1"><strong>Description:</strong> {{ report.description|default:"-" }}</p>
+                            <p class="mb-1"><strong>Prediction:</strong> {{ report.prediction|default:"No prediction yet" }}</p>
+                            <p class="mb-3"><strong>Uploaded:</strong> {{ report.uploaded_at|date:"M d, Y" }}</p>
 
-            {% if pending_reports %}
-                <div class="row g-4">
-                    {% for report in pending_reports %}
-                        <div class="col-md-6">
-                            <div class="card shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Patient: {{ report.user.username }}</h5>
-                                    <p><strong>Prediction:</strong> {{ report.prediction|default:"No prediction yet" }}</p>
-                                    <p><strong>Uploaded At:</strong> {{ report.uploaded_at|date:"M d, Y" }}</p>
+                            <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-primary btn-sm mb-3 w-100">View Report Image</a>
 
-                                    <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-primary btn-sm mb-3">View Report Image</a>
-
-                                    <form action="{% url 'give_assistance' report.id %}" method="post">
-                                        {% csrf_token %}
-                                        <div class="form-floating mb-2">
-                                            <textarea name="doctor_comment" class="form-control" id="comment{{ report.id }}" placeholder="Write your advice..." style="height: 100px;" required></textarea>
-                                            <label for="comment{{ report.id }}">Write your advice here...</label>
-                                        </div>
-                                        <div class="d-grid">
-                                            <button type="submit" class="btn btn-primary">Submit Advice</button>
-                                        </div>
-                                    </form>
+                            <form action="{% url 'give_assistance' report.id %}" method="post" class="mt-auto">
+                                {% csrf_token %}
+                                <div class="form-floating mb-2">
+                                    <textarea name="doctor_comment" class="form-control" id="comment{{ report.id }}" placeholder="Write your advice..." style="height: 100px;" required></textarea>
+                                    <label for="comment{{ report.id }}">Write your advice here...</label>
                                 </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary rounded-pill">Submit Advice</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">No pending assistance requests at the moment.</div>
+        {% endif %}
+    </section>
+
+
+    <!-- Reviewed Reports Section -->
+    <section id="reviewed-section" style="display: none;">
+        <div class="mb-4 text-center">
+            <h3 class="fw-bold">✅ Your Reviewed Reports</h3>
+            <p class="fw-bold">Summary of the reports you have already reviewed and commented on.</p>
+        </div>
+        <div class="d-flex justify-content-start mb-4">
+            <button class="btn btn-outline-secondary btn-sm" onclick="backToPortal()">
+                <i class="fas fa-arrow-left me-2"></i> Back to Portal
+            </button>
+        </div>
+        {% if reviewed_reports %}
+            <div class="row g-4">
+                {% for report in reviewed_reports %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100 border-success border-2">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">{{ report.user.username }}</h5>
+                            <p class="text-muted">Reviewed on {{ report.uploaded_at|date:"M d, Y" }}</p>
+                            <div class="alert alert-success mt-3">{{ report.doctor_comment }}</div>
+
+                            <div class="d-grid">
+                                <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-success btn-sm">View Report Image</a>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
-            {% else %}
-                <div class="alert alert-info">No pending assistance requests at the moment.</div>
-            {% endif %}
-        </section>
-
-        <section class="mb-5">
-            <h3 class="mb-4 border-bottom pb-2">✅ Your Reviewed Reports</h3>
-
-            {% if reviewed_reports %}
-                <div class="row g-4">
-                    {% for report in reviewed_reports %}
-                        <div class="col-md-6">
-                            <div class="card border-success shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Patient: {{ report.user.username }}</h5>
-                                    <p><strong>Your Comment:</strong></p>
-                                    <div class="alert alert-success">{{ report.doctor_comment }}</div>
-                                    <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-success btn-sm">View Report Image</a>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="alert alert-info">You haven't reviewed any reports yet.</div>
-            {% endif %}
-        </section>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center">You haven't reviewed any reports yet.</div>
+        {% endif %}
+    </section>
     {% else %}
         <div class="alert alert-warning text-center">
-            Your account is awaiting admin verification. You will be notified once it's approved.
+            <h5>Your account is awaiting admin verification.</h5>
         </div>
     {% endif %}
 </div>
+
+<script>
+    function showSection(sectionId) {
+        document.getElementById('card_display').style.display = 'none'; // Hide the count cards
+        document.getElementById('pending-section').style.display = 'none';
+        document.getElementById('reviewed-section').style.display = 'none';
+        document.getElementById(sectionId).style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToPortal() {
+        document.getElementById('card_display').style.display = 'flex'; // Show count cards
+        document.getElementById('pending-section').style.display = 'none';
+        document.getElementById('reviewed-section').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
 {% endblock %}
