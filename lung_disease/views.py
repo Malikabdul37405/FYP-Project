@@ -262,7 +262,7 @@ def contact(request):
         message = request.POST.get('message')
         ContactInfo.objects.create(address=name, phone=message, email=email)
 
-        messages.success(request, "Thank you for reaching out! We'll get back to you soon.")
+        messages.success(request, "Thank you for reaching out!")
         return redirect('contact')
 
     return render(request, 'contact.html')
@@ -286,6 +286,30 @@ def doctor_blog(request):
 
 def doctor_blog_detail(request, blog_id):
     return render(request, 'doctor/doctor_blog_detail.html', {'blog': get_object_or_404(Blog, id=blog_id)})
+
+# Doctor Contact Page
+def doctor_contact(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        ContactInfo.objects.create(address=name, phone=message, email=email)
+
+        messages.success(request, "Thank you for reaching out!")
+        return redirect('doctor_contact')
+
+    return render(request, 'doctor/doctor_contact.html')
+
+
+def doctor_contact_view(request):
+    contact_info = ContactInfo.objects.first()
+    if not contact_info:
+        contact_info = ContactInfo.objects.create(
+            address="2nd Flr, Chaudhary Plaza, Rawalpindi",
+            phone="+92-331-6262-363",
+            email="default@example.com"
+        )
+    return render(request, 'doctor/doctor_contact.html', {'contact_info': contact_info})
 
 """@login_required
 def dashboard(request):

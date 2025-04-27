@@ -1,0 +1,75 @@
+{% extends 'doctor_base.html' %}
+
+{% block title %}
+Contact Us
+{% endblock %}
+
+{% block content %}
+<section class="contact-section rounded p-4 mb-4" style="background: rgba(28, 28, 28, 0.9); color: #ffffff;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold" style="color: #007bff;">Contact Us</h2>
+            <p class="lead" style="color: #d3d3d3;">
+                We’re here to help! Contact us with your inquiries, and we’ll respond as soon as possible.
+            </p>
+        </div>
+        
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-md-6">
+                <div class="rounded p-4 mb-4" style="background: rgba(255, 255, 255, 0.1);">
+                    <h4 style="color: #00bfff;">
+                        <i class="fas fa-map-marker-alt"></i> Address
+                    </h4>
+                    <p>{{ contact_info.address }}</p>
+                </div>
+                <div class="rounded p-4 mb-4" style="background: rgba(255, 255, 255, 0.1);">
+                    <h4 style="color: #00bfff;">
+                        <i class="fas fa-phone-alt"></i> Phone
+                    </h4>
+                    <p>{{ contact_info.phone }}</p>
+                </div>
+                <div class="rounded p-4" style="background: rgba(255, 255, 255, 0.1);">
+                    <h4 style="color: #00bfff;">
+                        <i class="fas fa-envelope"></i> Email
+                    </h4>
+                    <p>{{ contact_info.email }}</p>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-md-6">
+                <div class="card p-4 shadow rounded" style="background: #ffffff; color: #000000;">
+                    <h4 class="text-center mb-4 fw-bold">Send Message</h4>
+                    <form method="post" action="{% url 'doctor_contact_submit' %}">
+                        {% csrf_token %}
+                        
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" id="full_name" name="full_name" class="form-control" placeholder="Full Name" required>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Type your Message...</label>
+                            <textarea id="message" name="message" class="form-control" rows="4" placeholder="Type your Message..." required></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-dark px-4 py-2 rounded-pill">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
