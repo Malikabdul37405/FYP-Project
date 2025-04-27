@@ -207,7 +207,7 @@ def register(request):
                 # Check if user is a doctor
                 doctor_profile = DoctorProfile.objects.get(user=user)
                 if doctor_profile.verified:
-                    return redirect('doctor_dashboard')
+                    return redirect('doctor_portal')
                 else:
                     return render(request, 'doctor/unverified.html')
             except DoctorProfile.DoesNotExist:
@@ -225,12 +225,11 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            messages.success(request, "Login successful!")
 
             next_url = request.GET.get('next')
             # 🧠 Doctor check here
             if hasattr(user, 'doctorprofile'):
-                return redirect('doctor_dashboard')
+                return redirect('doctor_portal')
 
             return redirect(next_url if next_url else 'home')
         else:
@@ -243,7 +242,6 @@ def user_login(request):
 # User Logout
 def user_logout(request):
     logout(request)
-    messages.info(request, "You have been logged out.")
     return redirect('home')
 
 
@@ -335,11 +333,26 @@ def delete_record(request, record_id):
     return redirect('dashboard') 
 
 @login_required
-def doctor_dashboard(request):
-    doctor = DoctorProfile.objects.get(user=request.user)
+def doctor_portal(request):
+    """doctor = DoctorProfile.objects.get(user=request.user)  #Orignal
     if not doctor.verified:
         return render(request, 'doctor/unverified.html')
-    return render(request, 'doctor/doctor_portal.html', {'doctor': doctor})
+    return render(request, 'doctor/doctor_portal.html', {'doctor': doctor})"""
+    doctor = DoctorProfile.objects.get(user=request.user)
+
+    if not doctor.verified:
+        return render(request, 'doctor/unverified.html', {'doctor': doctor})
+
+    # Fetch reports
+    pending_reports = PatientProfile.objects.filter(needs_doctor_assistance=True, reviewed_by=None)
+    reviewed_reports = PatientProfile.objects.filter(reviewed_by=request.user)
+
+    context = {
+        'doctor': doctor,
+        'pending_reports': pending_reports,
+        'reviewed_reports': reviewed_reports,
+    }
+    return render(request, 'doctor/doctor_portal.html', context)
 
 @login_required
 def request_doctor_assistance(request):
@@ -350,8 +363,34 @@ def request_doctor_assistance(request):
             report.needs_doctor_assistance = True
             report.save()
             messages.success(request, "Doctor assistance requested successfully.")
-            return redirect('home')  # or wherever you want to send user
+            return redirect('home') 
     else:
         form = DoctorAssistanceRequestForm(request.user)
 
     return render(request, 'patient/request_assistance.html', {'form': form})
+
+
+
+@login_required
+def give_assistance(request, report_id):
+    doctor = DoctorProfile.objects.get(user=request.user)
+    report = get_object_or_404(PatientProfile, id=report_id, needs_doctor_assistance=True, reviewed_by=None)
+
+    if request.method == 'POST':
+        doctor_comment = request.POST.get('doctor_comment', '').strip()
+        if doctor_comment:
+            report.doctor_comment = doctor_comment
+            report.reviewed_by = request.user
+            #report.needs_doctor_assistance = False
+            report.save()
+            messages.success(request, "Advice submitted successfully!")
+        else:
+            messages.error(request, "Advice cannot be empty.")
+
+    return redirect('doctor_portal')
+
+@login_required
+def view_doctor_responses(request):
+    reports = PatientProfile.objects.filter(user=request.user, needs_doctor_assistance=True)
+
+    return render(request, 'patient/view_responses.html', {'reports': reports})

@@ -1,41 +1,28 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container mt-5">
-    <h3>Request Doctor Assistance</h3>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 fw-bold" style="color: #007bff;">Request Doctor Assistance</h2>
+        <p class="lead">Select a report you want a doctor to review and assist you with.</p>
+    </div>
 
     {% if form.fields.report.queryset %}
     <form method="post" id="assistanceForm">
         {% csrf_token %}
-
-        <div class="mb-4">
-            <h5>Select a Report:</h5>
-            <div class="row">
+        
+        <div class="mb-5">
+            <h4 class="mb-4">Step 1: Choose Your Report</h4>
+            <div class="row g-4">
                 {% for report in form.fields.report.queryset %}
-                <div class="col-md-4 mb-3">
-                    <label class="card h-100">
-                        <input type="radio" name="report" value="{{ report.id }}" style="display: none;">
-                        <img src="{{ report.image.url }}" class="card-img-top" alt="Report Image" style="height: 200px; object-fit: cover;">
+                <div class="col-md-4">
+                    <label class="card shadow-sm report-card h-100" style="cursor:pointer; border: 2px solid transparent;">
+                        <input type="radio" name="report" value="{{ report.id }}" class="d-none">
+                        <img src="{{ report.image.url }}" class="card-img-top" alt="Report Image" style="height: 220px; object-fit: cover; border-bottom: 1px solid #ddd;">
                         <div class="card-body text-center">
-                            <h5 class="card-title">{{ report.first_name }} {{ report.last_name }}</h5>
-                            <p class="card-text">{{ report.prediction|default:"No prediction yet" }}</p>
-                            <p class="card-text">{{ record.uploaded_at|date:"M d, Y" }}</p>
-                        </div>
-                    </label>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="mb-4">
-            <h5>Select a Doctor:</h5>
-            <div class="row">
-                {% for doctor in form.fields.doctor.queryset %}
-                <div class="col-md-4 mb-3">
-                    <label class="card h-100">
-                        <input type="radio" name="doctor" value="{{ doctor.id }}" style="display: none;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ doctor.full_name }}</h5>
-                            <p class="card-text">{{ doctor.specialization }}</p>
+                            <h5 class="card-title mb-2">{{ report.first_name }} {{ report.last_name }}</h5>
+                            <p class="text-muted mb-1">{{ report.prediction|default:"No prediction yet" }}</p>
+                            <small class="text-secondary">{{ report.uploaded_at|date:"M d, Y" }}</small>
                         </div>
                     </label>
                 </div>
@@ -44,53 +31,70 @@
         </div>
 
         <div class="text-center">
-            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit Request</button>
+            <button type="button" class="btn btn-primary btn-lg px-5" id="submitBtn" disabled>Submit Request</button>
         </div>
     </form>
     {% else %}
-    <div class="alert alert-warning">
-        You have no reports available for doctor assistance. Please upload a new report.
+    <div class="alert text-center p-4 mt-5" style="background-color: #e0f7fa; color: #006064; border: 1px solid #4dd0e1; border-radius: 10px;">
+        <h5 class="fw-bold">No Available Reports</h5>
+        <p>Please upload a report first to request assistance from doctors.</p>
+        <a href="{% url 'home' %}#form-section" class="btn btn-info mt-3 px-4 rounded-pill">Upload Report</a>
     </div>
     {% endif %}
 </div>
 
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="confirmModalLabel">Confirm Assistance Request</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-0">Are you sure you want to request doctor assistance for this selected report?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="confirmSubmit">Yes, Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-    const form = document.getElementById('assistanceForm');
-    const submitBtn = document.getElementById('submitBtn');
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('assistanceForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        const confirmSubmit = document.getElementById('confirmSubmit');
 
-    if (form) {
-        form.addEventListener('change', function () {
-            const reportSelected = document.querySelector('input[name="report"]:checked');
-            const doctorSelected = document.querySelector('input[name="doctor"]:checked');
+        const reportCards = document.querySelectorAll('label.report-card');
 
-            submitBtn.disabled = !(reportSelected && doctorSelected);
-        });
+        reportCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const radio = card.querySelector('input[type="radio"]');
+                radio.checked = true;
 
-        const reportCards = document.querySelectorAll('input[name="report"]');
-        const doctorCards = document.querySelectorAll('input[name="doctor"]');
+                // Remove highlight from all cards
+                reportCards.forEach(c => c.style.borderColor = 'transparent');
+                // Highlight selected card
+                card.style.borderColor = '#0d6efd'; // Bootstrap primary blue
 
-        reportCards.forEach(input => {
-            input.closest('label.card').addEventListener('click', () => {
-                reportCards.forEach(i => i.closest('label.card').classList.remove('border-primary'));
-                input.checked = true;
-                input.closest('label.card').classList.add('border-primary');
-
-                // 🔥 Dispatch change event
-                form.dispatchEvent(new Event('change'));
+                submitBtn.disabled = false;
             });
         });
 
-        doctorCards.forEach(input => {
-            input.closest('label.card').addEventListener('click', () => {
-                doctorCards.forEach(i => i.closest('label.card').classList.remove('border-primary'));
-                input.checked = true;
-                input.closest('label.card').classList.add('border-primary');
-
-                // 🔥 Dispatch change event
-                form.dispatchEvent(new Event('change'));
-            });
+        // Open confirmation modal
+        submitBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            confirmModal.show();
         });
-    }
+
+        // Confirmed submit
+        confirmSubmit.addEventListener('click', function() {
+            form.submit();
+        });
+    });
 </script>
-
 {% endblock %}

@@ -1,34 +1,81 @@
 {% extends 'doctor_base.html' %}
 
 {% block content %}
-<h2>Welcome, Dr. {{ doctor.full_name }}</h2>
-<p>Status: 
-    {% if doctor.verified %}
-        <span class="text-success">Verified</span>
-    {% else %}
-        <span class="text-danger">Pending Verification</span>
-    {% endif %}
-</p>
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h2>Welcome, Dr. {{ doctor.full_name }}</h2>
+        <p class="lead">
+            Status:
+            {% if doctor.verified %}
+                <span class="badge bg-success">Verified</span>
+            {% else %}
+                <span class="badge bg-danger">Pending Verification</span>
+            {% endif %}
+        </p>
+    </div>
 
-{% if doctor.verified %}
-    <h4>Patient Reports:</h4>
-    {% for report in patient_reports %}
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Report by {{ report.user.username }}</h5>
-                <p><strong>Prediction:</strong> {{ report.prediction }}</p>
-                <a href="{{ report.image.url }}" target="_blank">View Image</a>
-                
-                <!-- Later: Button to give assistance -->
-                <form action="{% url 'give_assistance' report.id %}" method="post" class="mt-2">
-                    {% csrf_token %}
-                    <textarea name="doctor_comment" class="form-control" placeholder="Write your advice..."></textarea>
-                    <button type="submit" class="btn btn-primary btn-sm mt-2">Submit Advice</button>
-                </form>
-            </div>
+    {% if doctor.verified %}
+        <section class="mb-5">
+            <h3 class="mb-4 border-bottom pb-2">📝 Pending Assistance Requests</h3>
+
+            {% if pending_reports %}
+                <div class="row g-4">
+                    {% for report in pending_reports %}
+                        <div class="col-md-6">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Patient: {{ report.user.username }}</h5>
+                                    <p><strong>Prediction:</strong> {{ report.prediction|default:"No prediction yet" }}</p>
+                                    <p><strong>Uploaded At:</strong> {{ report.uploaded_at|date:"M d, Y" }}</p>
+
+                                    <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-primary btn-sm mb-3">View Report Image</a>
+
+                                    <form action="{% url 'give_assistance' report.id %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-floating mb-2">
+                                            <textarea name="doctor_comment" class="form-control" id="comment{{ report.id }}" placeholder="Write your advice..." style="height: 100px;" required></textarea>
+                                            <label for="comment{{ report.id }}">Write your advice here...</label>
+                                        </div>
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">Submit Advice</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">No pending assistance requests at the moment.</div>
+            {% endif %}
+        </section>
+
+        <section class="mb-5">
+            <h3 class="mb-4 border-bottom pb-2">✅ Your Reviewed Reports</h3>
+
+            {% if reviewed_reports %}
+                <div class="row g-4">
+                    {% for report in reviewed_reports %}
+                        <div class="col-md-6">
+                            <div class="card border-success shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Patient: {{ report.user.username }}</h5>
+                                    <p><strong>Your Comment:</strong></p>
+                                    <div class="alert alert-success">{{ report.doctor_comment }}</div>
+                                    <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-success btn-sm">View Report Image</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">You haven't reviewed any reports yet.</div>
+            {% endif %}
+        </section>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            Your account is awaiting admin verification. You will be notified once it's approved.
         </div>
-    {% endfor %}
-{% else %}
-    <p>Your account is awaiting admin verification. You will be notified once it's approved.</p>
-{% endif %}
+    {% endif %}
+</div>
 {% endblock %}

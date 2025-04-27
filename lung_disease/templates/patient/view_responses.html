@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-4 fw-bold" style="color: #007bff;">Doctor Responses</h2>
+        <p class="lead">View feedback on your reports submitted for assistance</p>
+    </div>
+
+    {% if reports %}
+        <div class="row g-4">
+            {% for report in reports %}
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Report ID: {{ report.id }}</h5>
+                            <p><strong>Prediction:</strong> {{ report.prediction|default:"No prediction available" }}</p>
+                            <p><strong>Uploaded At:</strong> {{ report.uploaded_at|date:"M d, Y" }}</p>
+
+                            <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-primary btn-sm mb-3">View Report Image</a>
+
+                            {% if report.doctor_comment %}
+                                <div class="alert alert-success">
+                                    <h6>Doctor's Advice:</h6>
+                                    <p>{{ report.doctor_comment }}</p>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning">
+                                    <strong>Awaiting doctor's response...</strong>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            You have no reports submitted for doctor assistance yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

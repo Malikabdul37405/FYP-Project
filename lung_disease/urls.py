@@ -16,6 +16,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('change-password/', views.change_password, name='change_password'),
     path('delete-record/<int:record_id>/', views.delete_record, name='delete_record'),
-    #path('doctor/register/', views.doctor_register, name='doctor_register'),
-    path('doctor/dashboard/', views.doctor_dashboard, name='doctor_dashboard'),
+    path('doctor/portal/', views.doctor_portal, name='doctor_portal'),
+    path('doctor/give-assistance/<int:report_id>/', views.give_assistance, name='give_assistance'),
+    path('responses/', views.view_doctor_responses, name='view_responses'),
 ]

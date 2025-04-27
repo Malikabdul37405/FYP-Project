@@ -195,7 +195,7 @@
     <!-- Doctor Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'doctor_dashboard' %}">
+            <a class="navbar-brand" href="{% url 'doctor_portal' %}">
                 <img src="{% static 'images/Lungs_Logo1.png' %}" alt="Doctor Logo" style="height: 50px; width: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#doctorNavbar">
@@ -203,7 +203,7 @@
             </button>
             <div class="collapse navbar-collapse" id="doctorNavbar">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'doctor_dashboard' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'doctor_portal' %}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>
                 </ul>
@@ -218,7 +218,7 @@
                             {{ user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="doctorUserDropdown">
-                            <li><a class="dropdown-item" href="{% url 'doctor_dashboard' %}">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="#">Dashboard</a></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                         </ul>
                     </li>
@@ -245,7 +245,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="{% url 'doctor_dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'doctor_portal' %}">Dashboard</a></li>
                         <li><a href="{% url 'blog' %}">Blogs</a></li>
                         <li><a href="{% url 'contact' %}">Contact</a></li>
                     </ul>
