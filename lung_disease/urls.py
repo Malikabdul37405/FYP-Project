@@ -21,4 +21,6 @@ urlpatterns = [
     path('doctor_blog/', views.doctor_blog, name='doctor_blog'),         # Doctor Blog page
     path('doctor_blog/<int:blog_id>/', views.doctor_blog_detail, name='doctor_blog_detail'),
     path('doctor_contact/', views.doctor_contact, name='doctor_contact'),     # Doctor Contact us page
+    path('doctor_dashboard/', views.doctor_dashboard, name='doctor_dashboard'),
+    path('doctor_change-password/', views.doctor_change_password, name='doctor_change_password'),
 ]

@@ -15,6 +15,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Report ID: {{ report.id }}</h5>
                             <p><strong>Prediction:</strong> {{ report.prediction|default:"No prediction available" }}</p>
+                            <p><strong>Reviewed By:</strong> {{ report.reviewed_by }}</p>
                             <p><strong>Uploaded At:</strong> {{ report.uploaded_at|date:"M d, Y" }}</p>
 
                             <a href="{{ report.image.url }}" target="_blank" class="btn btn-outline-primary btn-sm mb-3">View Report Image</a>

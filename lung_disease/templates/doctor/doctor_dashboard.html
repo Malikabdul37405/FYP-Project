@@ -1,0 +1,129 @@
+{% extends 'doctor_base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5 p-4 bg-light rounded shadow-sm">
+    <h2 class="mb-4">Welcome, {{ user.username }}</h2>
+
+    <!-- Toast Container -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+        {% if request.GET.success %}
+        <div class="toast align-items-center text-white bg-success border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Password changed successfully!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+        {% elif request.GET.error %}
+        <div class="toast align-items-center text-white bg-danger border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ request.GET.error }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Account Info Card -->
+    <div class="card mb-4">
+        <div class="card-header">Account Information</div>
+        <div class="card-body">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p>
+                <strong>Password:</strong>
+                <span id="passwordField" class="me-2">********</span>
+                <button id="togglePassword" class="btn btn-sm btn-outline-secondary" title="Show/Hide Password">
+                    <i class="fas fa-eye" id="eyeIcon"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary ms-2" data-bs-toggle="collapse" data-bs-target="#passwordChangeCard" aria-expanded="true">
+                    <i class="fas fa-edit"></i> Change Password
+                </button>
+            </p>
+
+            <!-- Password Change Form -->
+            <div class="mt-3 {% if form.errors %}show{% else %}collapse{% endif %}" id="passwordChangeCard">
+                <div class="card card-body border">
+                    <form method="post" action="{% url 'doctor_change_password' %}" id="passwordForm">
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors|striptags }}
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Old Password</label>
+                            <input type="password" name="old_password" class="form-control {% if form.old_password.errors %}is-invalid{% endif %}" required>
+                            {% if form.old_password.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.old_password.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <input type="password" name="new_password1" class="form-control {% if form.new_password1.errors %}is-invalid{% endif %}" required>
+                            {% if form.new_password1.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.new_password1.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" name="new_password2" class="form-control {% if form.new_password2.errors %}is-invalid{% endif %}" required>
+                            {% if form.new_password2.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.new_password2.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Update Password</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="cancelPasswordChange()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script>
+    const toggleBtn = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('passwordField');
+    const eyeIcon = document.getElementById('eyeIcon');
+    let showing = false;
+
+    toggleBtn.addEventListener('click', function () {
+        if (!showing) {
+            passwordField.textContent = "{{ user.password }}";
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.textContent = "********";
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+        showing = !showing;
+    });
+</script>
+
+<script>
+    function cancelPasswordChange() {
+        const card = document.getElementById('passwordChangeCard');
+        const form = document.getElementById('passwordForm');
+        card.classList.remove('show');
+        form.reset();
+    }
+</script>
+{% endblock %}

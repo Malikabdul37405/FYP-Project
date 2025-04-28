@@ -365,9 +365,9 @@ def change_password(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
-            return redirect(reverse('dashboard') + '?success=1')
+            messages.success(request, "Password changed successfully!")
+            return redirect('dashboard')
         else:
-            from .models import PatientProfile
             patient_records = PatientProfile.objects.filter(user=request.user)
             return render(request, 'patient/dashboard.html', {
                 'patient_records': patient_records,
@@ -443,3 +443,24 @@ def view_doctor_responses(request):
     reports = PatientProfile.objects.filter(user=request.user, needs_doctor_assistance=True)
 
     return render(request, 'patient/view_responses.html', {'reports': reports})
+
+@login_required
+def doctor_dashboard(request):
+    form = PasswordChangeForm(user=request.user)
+
+    return render(request, 'doctor/doctor_dashboard.html', {'form': form,})
+
+@login_required
+def doctor_change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, "Password changed successfully!")
+            return redirect('doctor_dashboard')
+        else:
+            return render(request, 'doctor/doctor_dashboard.html', {
+                'form': form
+            })
+    return redirect('doctor_dashboard')
