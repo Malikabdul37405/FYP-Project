@@ -2,6 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
+class DoctorProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255)
+    specialization = models.CharField(max_length=255)
+    license_number = models.CharField(max_length=100)
+    verified = models.BooleanField(default=False)
+    documents = models.FileField(upload_to='doctor_documents/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Dr. {self.full_name} ({'Verified' if self.verified else 'Pending'})"
+    
+
 class PatientProfile(models.Model):
     GENDER_CHOICES = [
         ('Male', 'Male'),
@@ -19,6 +32,8 @@ class PatientProfile(models.Model):
     uploaded_at = models.DateTimeField('Uploaded At',auto_now_add=True)
     prediction = models.CharField('Prediction Result', max_length=100, blank=True, null=True)
     reviewed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='reviews')
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='doctor_patients')
+    doctor_name = models.CharField('Doctor Name', max_length=255, blank=True, null=True)
     doctor_comment = models.TextField(blank=True, null=True)
     needs_doctor_assistance = models.BooleanField(default=False)
 
@@ -56,15 +71,3 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"Message from {self.full_name}"
-
-class DoctorProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    full_name = models.CharField(max_length=255)
-    specialization = models.CharField(max_length=255)
-    license_number = models.CharField(max_length=100)
-    verified = models.BooleanField(default=False)
-    documents = models.FileField(upload_to='doctor_documents/', null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Dr. {self.full_name} ({'Verified' if self.verified else 'Pending'})"

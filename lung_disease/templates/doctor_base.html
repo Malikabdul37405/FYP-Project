@@ -231,7 +231,7 @@
     {% if messages %}
         {% for message in messages %}
             {% if forloop.last %}
-            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+            <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 1055">
                 <div class="toast align-items-center text-white 
                     {% if message.tags == 'success' %} bg-success 
                     {% elif message.tags == 'error' %} bg-danger 

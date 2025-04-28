@@ -200,7 +200,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/patient/home/">
+            <a class="navbar-brand" href="/">
                 <img src="{% static 'images/Lungs_Logo1.png' %}" alt="Lung Disease App Logo" style="height: 50px; width: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -208,7 +208,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="/patient/home/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/assistance/">Doctor Assistance</a></li>
                     <li class="nav-item"><a class="nav-link" href="/responses/">Doctor Responses</a></li>
                     <li class="nav-item"><a class="nav-link" href="/patient/blog/">Blogs</a></li>
@@ -245,7 +245,7 @@
     {% if messages %}
         {% for message in messages %}
             {% if forloop.last %}
-            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+            <div class="position-fixed bottom-0 start-0 p-3" style="z-index: 1055">
                 <div class="toast align-items-center text-white 
                     {% if message.tags == 'success' %} bg-success 
                     {% elif message.tags == 'error' %} bg-danger 
@@ -296,7 +296,7 @@
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
                         <li><a href="/patient/dashboard/">Dashboard</a></li>
-                        <li><a href="/patient/home/">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="/assistance/">Doctor Assistance</a></li>
                         <li><a href="/responses/">Doctor Responses</a></li>
                         <li><a href="/patient/blog/">Blogs</a></li>

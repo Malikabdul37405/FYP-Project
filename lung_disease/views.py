@@ -86,7 +86,7 @@ def home(request):
     else:
         form = ImageUploadForm()
 
-    return render(request, 'patient/home.html', {'form': form})
+    return render(request, 'home.html', {'form': form})
 
 
 # Result Page (Performs AI-based Prediction)
@@ -430,7 +430,7 @@ def give_assistance(request, report_id):
         if doctor_comment:
             report.doctor_comment = doctor_comment
             report.reviewed_by = request.user
-            #report.needs_doctor_assistance = False
+            report.doctor_name = doctor.full_name
             report.save()
             messages.success(request, "Advice submitted successfully!")
         else:
