@@ -448,7 +448,7 @@ def view_doctor_responses(request):
 def doctor_dashboard(request):
     form = PasswordChangeForm(user=request.user)
 
-    return render(request, 'doctor/doctor_dashboard.html', {'form': form,})
+    return render(request, 'doctor/doctor_profile.html', {'form': form,})
 
 @login_required
 def doctor_change_password(request):
