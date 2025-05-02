@@ -353,7 +353,7 @@ def dashboard(request):
     patient_records = PatientProfile.objects.filter(user=request.user)
     form = PasswordChangeForm(user=request.user)
 
-    return render(request, 'patient/dashboard.html', {
+    return render(request, 'patient/profile.html', {
         'patient_records': patient_records,
         'form': form,
     })
