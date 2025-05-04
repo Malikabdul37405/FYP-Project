@@ -131,7 +131,7 @@ def result(request):
     })
 
 # User Registration Orignal
-"""def register(request):
+"""def sign_up(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -143,15 +143,15 @@ def result(request):
         # Validate the form
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
-            return render(request, 'register.html')
+            return render(request, 'sign_up.html')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
-            return render(request, 'register.html')
+            return render(request, 'sign_up.html')
 
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
-            return render(request, 'register.html')
+            return render(request, 'sign_up.html')
 
         # Create the user
         user = User.objects.create_user(username=username, email=email, password=password1)
@@ -163,9 +163,9 @@ def result(request):
         messages.success(request, "Registration successful! Welcome!")
         return redirect('login')
 
-    return render(request, 'register.html')"""
+    return render(request, 'sign_up.html')"""
 
-def register(request):
+def sign_up(request):
     if request.method == 'POST':
         user_type = request.POST.get('user_type')
 
@@ -182,7 +182,7 @@ def register(request):
     else:
         form = UserRegisterForm()
 
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'sign_up.html', {'form': form})
 
 # User Login Orignal
 """def user_login(request):

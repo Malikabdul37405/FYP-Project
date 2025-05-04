@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.home, name='home'),               # Home page
-    path('register/', views.register, name='register'),  # Registration page
+    path('sign_up/', views.sign_up, name='sign_up'),  # Registration page
     path('login/', views.user_login, name='login'),      # Login page
     path('logout/', views.user_logout, name='logout'),   # Logout functionality
     path('assistance/', views.request_doctor_assistance, name='assistance'),    # doctor assistance
