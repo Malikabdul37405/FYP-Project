@@ -12,6 +12,11 @@ from django.contrib.auth import update_session_auth_hash
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
+
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -464,3 +469,4 @@ def doctor_change_password(request):
                 'form': form
             })
     return redirect('doctor_dashboard')
+
