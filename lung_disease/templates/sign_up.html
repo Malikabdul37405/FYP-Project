@@ -1,3 +1,4 @@
+<!-- Sign Up HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +14,8 @@
     <!-- Boxicons for icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-    <!-- Custom CSS -->
     <style>
-
-        /* auto fill styling */
+        /* Existing CSS (unchanged) */
         input:-webkit-autofill {
             background-clip: text;
             -webkit-text-fill-color: #fff;
@@ -24,7 +23,7 @@
             -webkit-box-shadow: 0 0 0px 1000px transparent inset;
             transition: background-color 5000s ease-in-out 0s;
         }
-        
+
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -49,32 +48,33 @@
         }
 
         .wrapper {
-            width: 400px; /* Reduced width */
+            width: 400px;
             background: transparent;
             border: 2px solid rgba(255, 255, 255, .2);
             backdrop-filter: blur(20px);
             box-shadow: 0 0 10px rgba(0, 0, 0, .2);
             color: #fff;
             border-radius: 10px;
-            padding: 15px 20px; /* Reduced padding */
+            padding: 15px 20px;
             margin-top: 100px;
             margin-bottom: 100px;
         }
 
         .wrapper h1 {
-            font-size: 30px; /* Reduced heading size */
+            font-size: 30px;
             text-align: center;
             margin-bottom: 20px;
         }
 
-        .wrapper .input-box {
+        .input-box {
             position: relative;
             width: 100%;
-            height: 45px; /* Reduced input field height */
-            margin: 10px 0; /* Reduced margin between fields */
+            height: 45px;
+            margin: 10px 0;
         }
 
-        .input-box input {
+        .input-box input,
+        .input-box select {
             width: 100%;
             height: 100%;
             background: transparent;
@@ -82,9 +82,9 @@
             outline: none;
             border: 2px solid rgba(255, 255, 255, .2);
             border-radius: 40px;
-            font-size: 14px; /* Reduced font size */
+            font-size: 14px;
             color: #fff;
-            padding: 0 35px 0 15px; /* Reduced padding inside the input */
+            padding: 0 35px 0 15px;
         }
 
         .input-box input::placeholder {
@@ -96,25 +96,25 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 18px; /* Reduced icon size */
+            font-size: 18px;
         }
 
         .wrapper .btn {
             width: 100%;
-            height: 45px; /* Reduced button height */
+            height: 45px;
             background: #fff;
             border: none;
             outline: none;
             border-radius: 40px;
             box-shadow: 0 0 10px rgba(0, 0, 0, .1);
             cursor: pointer;
-            font-size: 14px; /* Reduced button font size */
+            font-size: 14px;
             color: #333;
             font-weight: 600;
         }
 
         .wrapper .register-link {
-            font-size: 14px; /* Reduced link font size */
+            font-size: 14px;
             text-align: center;
             margin: 15px 0 10px;
         }
@@ -129,30 +129,28 @@
             text-decoration: underline;
         }
 
-        /* To handle First and Last Name side by side */
         .input-box-row {
             display: flex;
-            gap: 10px; /* Reduced gap between fields */
+            gap: 10px;
         }
 
         .input-box-row .input-box {
-            flex: 1; /* Ensures equal width of fields */
+            flex: 1;
         }
 
-        /* Ensure form is responsive */
         @media (max-width: 767px) {
             .wrapper {
-                width: 80%; /* Adjust wrapper width for smaller screens */
+                width: 80%;
                 padding: 25px;
             }
 
             .input-box-row {
-                flex-direction: column; /* Stack inputs vertically on smaller screens */
+                flex-direction: column;
                 gap: 0;
             }
 
             .input-box-row .input-box {
-                width: 100%; /* Make input fields full width on small screens */
+                width: 100%;
             }
         }
 
@@ -175,7 +173,6 @@
             text-decoration: underline;
         }
 
-        /* file input text color fix */
         input[type="file"]::file-selector-button {
             background: #fff;
             color: #000;
@@ -186,51 +183,44 @@
         }
 
         .ribbon-error {
-        background-color: #dc3545;
-        color: white;
-        font-size: 0.75rem;
-        padding: 5px 12px;
-        border-radius: 8px 8px 8px 0;
-        display: inline-block;
-        position: absolute;
-        top: -32px;
-        left: 15px;
-        z-index: 2;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
+            background-color: #dc3545;
+            color: white;
+            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 8px 8px 8px 0;
+            display: inline-block;
+            position: absolute;
+            top: -32px;
+            left: 15px;
+            z-index: 2;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
 
-    .ribbon-error::after {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        left: 8px;
-        width: 0;
-        height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 8px solid #dc3545;
-    }
-
-    .input-box {
-        position: relative;
-    }
+        .ribbon-error::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 8px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #dc3545;
+        }
     </style>
 </head>
 <body>
     <div class="center-container">
         <div class="wrapper">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" onsubmit="return handleFormSubmit();">
                 {% csrf_token %}
                 <h1>Register</h1>
 
-                <!-- Toggle between Patient / Doctor -->
-                
                 <div class="user-type-switch">
                     <span id="patientSwitch" class="active" onclick="setUserType('patient')">Patient</span> /
                     <span id="doctorSwitch" onclick="setUserType('doctor')">Doctor</span>
                 </div>
 
-                <!-- First Name & Last Name -->
                 <div class="input-box-row">
                     <div class="input-box">
                         <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
@@ -240,12 +230,6 @@
                     </div>
                 </div>
 
-                <!-- Username -->
-                <!--div class="input-box">
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                    <i class='bx bxs-user'></i>
-                </div-->
-                <!-- Username -->
                 <div class="input-box">
                     {% if form.username.errors %}
                         <div class="ribbon-error">{{ form.username.errors.0 }}</div>
@@ -255,11 +239,6 @@
                     <i class='bx bxs-user'></i>
                 </div>
 
-                <!-- Email -->
-                <!--div class="input-box">
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                    <i class='bx bxs-envelope'></i>
-                </div-->
                 <div class="input-box">
                     {% if form.email.errors %}
                         <div class="ribbon-error">{{ form.email.errors.0 }}</div>
@@ -269,11 +248,26 @@
                     <i class='bx bxs-envelope'></i>
                 </div>
 
-                <!-- Password -->
-                <!--div class="input-box">
-                    <input type="password" id="password1" name="password1" placeholder="Enter your password" required>
-                    <i class='bx bxs-lock-alt'></i>
-                </div-->
+                <!-- Hidden input to track user type -->
+                <input type="hidden" name="user_type" id="user_type_input" value="patient">
+
+                <!-- Patient-only Fields -->
+                <div id="patient-fields">
+                    <div class="input-box">
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="number" id="age" name="age" placeholder="Age" min="0" required>
+                        <i class='bx bxs-user-detail'></i>
+                    </div>
+                </div>
+
                 <div class="input-box">
                     {% if form.password1.errors %}
                         <div class="ribbon-error">{{ form.password1.errors.0 }}</div>
@@ -283,11 +277,6 @@
                     <i class='bx bxs-lock-alt'></i>
                 </div>
 
-                <!-- Confirm Password -->
-                <!--div class="input-box">
-                    <input type="password" id="password2" name="password2" placeholder="Confirm your password" required>
-                    <i class='bx bxs-lock-alt'></i>
-                </div-->
                 <div class="input-box">
                     {% if form.password2.errors %}
                         <div class="ribbon-error">{{ form.password2.errors.0 }}</div>
@@ -297,40 +286,33 @@
                     <i class='bx bxs-lock-alt'></i>
                 </div>
 
-                <!-- Hidden input to submit user type -->
-                <input type="hidden" name="user_type" id="user_type_input" value="patient">
+                
 
-                <!-- Doctor-Only Fields -->
+                <!-- Doctor-only Fields -->
                 <div id="doctor-fields" style="display: none;">
-                    <!-- Full Name -->
                     <div class="input-box">
                         <input type="text" id="full_name" name="full_name" placeholder="Full Name (e.g. Dr. John Doe)">
                         <i class='bx bxs-id-card'></i>
                     </div>
 
-                    <!-- Specialization -->
                     <div class="input-box">
                         <input type="text" id="specialization" name="specialization" placeholder="Specialization (e.g. Pulmonologist)">
                         <i class='bx bx-capsule'></i>
                     </div>
 
-                    <!-- License Number -->
                     <div class="input-box">
                         <input type="text" id="license_number" name="license_number" placeholder="License Number">
                         <i class='bx bxs-file'></i>
                     </div>
 
-                    <!-- Upload Document -->
                     <div class="input-box">
                         <input type="file" id="documents" name="documents">
                         <i class='bx bxs-cloud-upload'></i>
                     </div>
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit" class="btn">Sign Up</button>
 
-                <!-- Link to Login -->
                 <div class="register-link">
                     <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
                 </div>
@@ -341,41 +323,56 @@
     <script>
         function setUserType(type) {
             const doctorFields = document.getElementById("doctor-fields");
+            const patientFields = document.getElementById("patient-fields");
             const userTypeInput = document.getElementById("user_type_input");
-
+    
             if (type === 'doctor') {
                 doctorFields.style.display = 'block';
+                patientFields.style.display = 'none';
                 userTypeInput.value = 'doctor';
+    
                 document.getElementById("doctorSwitch").classList.add("active");
                 document.getElementById("patientSwitch").classList.remove("active");
+    
+                // Remove required from patient, add to doctor
+                document.querySelectorAll("#patient-fields input, #patient-fields select").forEach(el => {
+                    el.removeAttribute("required");
+                });
+                document.querySelectorAll("#doctor-fields input").forEach(el => {
+                    if (el.type !== "file") el.setAttribute("required", "required");
+                });
+    
             } else {
                 doctorFields.style.display = 'none';
+                patientFields.style.display = 'block';
                 userTypeInput.value = 'patient';
+    
                 document.getElementById("patientSwitch").classList.add("active");
                 document.getElementById("doctorSwitch").classList.remove("active");
+    
+                // Remove required from doctor, add to patient
+                document.querySelectorAll("#doctor-fields input").forEach(el => {
+                    el.removeAttribute("required");
+                });
+                document.querySelectorAll("#patient-fields input, #patient-fields select").forEach(el => {
+                    el.setAttribute("required", "required");
+                });
             }
         }
-
-        // Restore user type on page reload (if needed)
+    
         window.onload = function () {
             const selectedType = "{{ request.POST.user_type|default:'patient' }}";
             setUserType(selectedType);
-        }
-        // Auto-hide error ribbons after 2 seconds
-        window.onload = function () {
-            // Restore selected user type
-            const selectedType = "{{ request.POST.user_type|default:'patient' }}";
-            setUserType(selectedType);
-
-            // Delay and remove error ribbons
+    
             setTimeout(() => {
                 document.querySelectorAll('.ribbon-error').forEach(el => {
                     el.style.transition = "opacity 0.5s ease";
                     el.style.opacity = 0;
-                    setTimeout(() => el.remove(), 500); // remove from DOM after fade out
+                    setTimeout(() => el.remove(), 500);
                 });
             }, 9000);
-        }
+        };
     </script>
+
 </body>
 </html>

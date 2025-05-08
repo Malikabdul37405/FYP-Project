@@ -22,14 +22,21 @@ class PatientProfile(models.Model):
         ('Others', 'Others'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    first_name = models.CharField('First Name',max_length=100) 
-    last_name = models.CharField('Last Name',max_length=100)
-    gender = models.CharField('Gender',max_length=10, choices=GENDER_CHOICES) 
-    age = models.PositiveIntegerField('Age')            
-    description = models.TextField('Description',blank=True)     
-    image = models.ImageField('Image',upload_to='uploads/') 
-    uploaded_at = models.DateTimeField('Uploaded At',auto_now_add=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField('First Name', max_length=100)
+    last_name = models.CharField('Last Name', max_length=100)
+    gender = models.CharField('Gender', max_length=10, choices=GENDER_CHOICES)
+    age = models.PositiveIntegerField('Age')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.first_name} {self.last_name}"
+
+
+class PatientReport(models.Model):
+    patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE, related_name='reports')
+    image = models.ImageField('Image', upload_to='uploads/')
+    uploaded_at = models.DateTimeField('Uploaded At', auto_now_add=True)
+    description = models.TextField('Description', blank=True)
     prediction = models.CharField('Prediction Result', max_length=100, blank=True, null=True)
     reviewed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='reviews')
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='doctor_patients')
@@ -38,7 +45,7 @@ class PatientProfile(models.Model):
     needs_doctor_assistance = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user.username} - {self.image.name}"
+        return f"Report for {self.patient.user.username} - {self.image.name}"
 
 class Blog(models.Model):
     title = models.CharField('Title', max_length=255)

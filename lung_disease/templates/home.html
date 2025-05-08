@@ -108,39 +108,10 @@ Home - Lung Disease App
             <form method="post" enctype="multipart/form-data" id="uploadForm">
                 {% csrf_token %}
 
-                <!-- First Name & Last Name -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="first_name" class="form-label fw-bold">First Name *</label>
-                        <input type="text" id="first_name" name="first_name" class="form-control rounded-pill" placeholder="First Name" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="last_name" class="form-label fw-bold">Last Name *</label>
-                        <input type="text" id="last_name" name="last_name" class="form-control rounded-pill" placeholder="Last Name" required>
-                    </div>
-                </div>
-
-                <!-- Gender & Age -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="gender" class="form-label fw-bold">Gender *</label>
-                        <select id="gender" name="gender" class="form-select rounded-pill" required>
-                            <option value="" selected>----------</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="age" class="form-label fw-bold">Age *</label>
-                        <input type="number" id="age" name="age" class="form-control rounded-pill" placeholder="Age" min="0" max="120" required>
-                    </div>
-                </div>
-
                 <!-- Description -->
                 <div class="mb-3">
                     <label for="description" class="form-label fw-bold">Description</label>
-                    <textarea id="description" name="description" class="form-control rounded" rows="3" placeholder="Add any additional information"></textarea>
+                    <textarea id="description" name="description" class="form-control rounded" rows="3" placeholder="Add any additional information" required></textarea>
                 </div>
 
                 <!-- File Upload with Drag-and-Drop -->

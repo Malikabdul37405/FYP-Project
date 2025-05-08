@@ -66,9 +66,9 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">Patient Details</h5>
-                    <p class="card-text"><strong>Patient Name:</strong> {{ latest_image.first_name }} {{ latest_image.last_name }}</p>
-                    <p class="card-text"><strong>Gender:</strong> {{ latest_image.gender }}</p>
-                    <p class="card-text"><strong>Age:</strong> {{ latest_image.age }}</p>
+                    <p class="card-text"><strong>Patient Name:</strong> {{ latest_image.patient.first_name }} {{ latest_image.patient.last_name }}</p>
+                    <p class="card-text"><strong>Gender:</strong> {{ latest_image.patient.gender }}</p>
+                    <p class="card-text"><strong>Age:</strong> {{ latest_image.patient.age }}</p>
                     
                     <!-- Prediction Result -->
                     <p class="card-text"><strong>Diagnosed Report:</strong> 

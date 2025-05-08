@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="container py-5">
     <div class="text-center mb-5">
         <h2 class="display-4 fw-bold" style="color: #007bff;">Request Doctor Assistance</h2>
@@ -19,8 +20,10 @@
                         <input type="radio" name="report" value="{{ report.id }}" class="d-none">
                         <img src="{{ report.image.url }}" class="card-img-top" alt="Report Image" style="height: 220px; object-fit: cover; border-bottom: 1px solid #ddd;">
                         <div class="card-body text-center">
-                            <h5 class="card-title mb-2">{{ report.first_name }} {{ report.last_name }}</h5>
-                            <p class="text-muted mb-1">{{ report.prediction|default:"No prediction yet" }}</p>
+                            <h5 class="card-title mb-2" title="{{ report.description }}">
+                                Description: {{ report.description|truncatewords:10 }}
+                            </h5>
+                            <p class="text-muted mb-1">Prediction: {{ report.prediction|default:"No prediction yet" }}</p>
                             <small class="text-secondary">{{ report.uploaded_at|date:"M d, Y" }}</small>
                         </div>
                     </label>
