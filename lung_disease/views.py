@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.urls import reverse
 
-from .forms import UserRegisterForm, ImageUploadForm, DoctorRegisterForm, DoctorAssistanceRequestForm
+from .forms import UserRegisterForm, ImageUploadForm, DoctorRegisterForm, DoctorAssistanceRequestForm, PatientProfileUpdateForm, DoctorProfileUpdateForm
 from .models import PatientProfile, PatientReport, ContactInfo, Blog, DoctorProfile, ContactMessage
 
 from tensorflow.keras.models import load_model
@@ -146,17 +146,33 @@ def result(request):
         'prediction': predicted_label
     })
 
-# ---------------- DASHBOARD ----------------
+# ---------------- profile ----------------
 @login_required
-def dashboard(request):
+def profile(request):
     patient_profile = get_object_or_404(PatientProfile, user=request.user)
     reports = PatientReport.objects.filter(patient=patient_profile)
-    form = PasswordChangeForm(user=request.user)
+    password_form = PasswordChangeForm(user=request.user)
+    profile_form = PatientProfileUpdateForm(instance=patient_profile, user=request.user)
 
     return render(request, 'patient/profile.html', {
+        'patient_profile': patient_profile,
         'patient_records': reports,
-        'form': form,
+        'form': password_form,
+        'profile_form': profile_form,
     })
+
+@login_required
+def update_profile(request):
+    patient_profile = get_object_or_404(PatientProfile, user=request.user)
+
+    if request.method == 'POST':
+        form = PatientProfileUpdateForm(request.POST, instance=patient_profile, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+        else:
+            messages.error(request, "Please try again.")
+    return redirect('profile')
 
 @login_required
 def change_password(request):
@@ -166,8 +182,10 @@ def change_password(request):
             form.save()
             update_session_auth_hash(request, form.user)
             messages.success(request, "Password changed successfully!")
-            return redirect('dashboard')
-    return redirect('dashboard')
+            return redirect('profile')
+        else:
+            messages.error(request, "Password miss matches. Try Again")
+    return redirect('profile')
 
 @login_required
 def delete_record(request, record_id):
@@ -176,7 +194,7 @@ def delete_record(request, record_id):
 
     if request.method == 'POST':
         record.delete()
-    return redirect('dashboard')
+    return redirect('profile')
 
 # ---------------- DOCTOR PORTAL ----------------
 @login_required
@@ -243,9 +261,28 @@ def view_doctor_responses(request):
     return render(request, 'patient/view_responses.html', {'reports': reports})
 
 @login_required
-def doctor_dashboard(request):
+def doctor_profile(request):
+    doctor = get_object_or_404(DoctorProfile, user=request.user)
+    profile_form = DoctorProfileUpdateForm(instance=doctor, user=request.user)
     form = PasswordChangeForm(user=request.user)
-    return render(request, 'doctor/doctor_profile.html', {'form': form})
+    return render(request, 'doctor/doctor_profile.html', {
+        'doctor': doctor,
+        'form': form,
+        'profile_form':profile_form,
+        })
+
+@login_required
+def update_doctor_profile(request):
+    doctor_profile = get_object_or_404(DoctorProfile, user=request.user)
+
+    if request.method == 'POST':
+        form = DoctorProfileUpdateForm(request.POST, instance=doctor_profile, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+        else:
+            messages.error(request, "Please try again.")
+    return redirect('doctor_profile')
 
 @login_required
 def doctor_change_password(request):
@@ -255,8 +292,10 @@ def doctor_change_password(request):
             form.save()
             update_session_auth_hash(request, form.user)
             messages.success(request, "Password changed successfully!")
-            return redirect('doctor_dashboard')
-    return redirect('doctor_dashboard')
+            return redirect('doctor_profile')
+        else:
+            messages.error(request, "Password miss matches. Try Again")
+    return redirect('doctor_profile')
 
 # ---------------- BLOG & CONTACT ----------------
 def blog(request):

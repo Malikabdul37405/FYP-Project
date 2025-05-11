@@ -16,7 +16,7 @@
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
+    
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -67,14 +67,25 @@
 
         html, body {
             height: 100%;
-            width: 100%;
             margin: 0;
-            
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
         }
 
         .container {
             flex: 1; /* Push the footer to the bottom */
         }
+
+        
 
         footer {
             text-align: center;
@@ -226,7 +237,7 @@
                             {{ user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="{% url 'dashboard' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                             
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                         </ul>
@@ -273,11 +284,10 @@
         </script>
     {% endif %}
 
-    <!-- Main Content -->
-    <span class="container">
+    <main>
         {% block content %}
         {% endblock %}
-    </span>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -295,7 +305,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="/patient/dashboard/">Dashboard</a></li>
+                        <!--li><a href="/patient/profile/">Profile</a></li-->
                         <li><a href="/">Home</a></li>
                         <li><a href="/assistance/">Doctor Assistance</a></li>
                         <li><a href="/responses/">Doctor Responses</a></li>

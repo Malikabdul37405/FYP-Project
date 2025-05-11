@@ -63,7 +63,17 @@
 
         html, body {
             height: 100%;
-            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
             margin: 0;
             
         }
@@ -218,7 +228,7 @@
                             {{ user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="doctorUserDropdown">
-                            <li><a class="dropdown-item" href="{% url 'doctor_dashboard' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'doctor_profile' %}">Profile</a></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                         </ul>
                     </li>
@@ -259,10 +269,10 @@
         </script>
     {% endif %}
     <!-- Main Content -->
-    <div class="container mt-4">
+    <main>
         {% block content %}
         {% endblock %}
-    </div>
+    </main>
 
     <!-- Footer (reused from base) -->
     <footer class="footer mt-5">
@@ -275,7 +285,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <h5 class="footer-heading">Quick Links</h5>
                     <ul class="footer-links">
-                        <li><a href="{% url 'doctor_dashboard' %}">Dashboard</a></li>
+                        <!--li><a href="{% url 'doctor_profile' %}">Profile</a></li-->
                         <li><a href="{% url 'doctor_portal' %}">Home</a></li>
                         <li><a href="{% url 'doctor_blog' %}">Blogs</a></li>
                         <li><a href="{% url 'doctor_contact' %}">Contact</a></li>
