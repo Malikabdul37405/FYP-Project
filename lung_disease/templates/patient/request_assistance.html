@@ -38,8 +38,8 @@
     </form>
     {% else %}
     <div class="alert text-center p-4 mt-5" style="background-color: #e0f7fa; color: #006064; border: 1px solid #4dd0e1; border-radius: 10px;">
-        <h5 class="fw-bold">No Available Reports</h5>
-        <p>Please upload a report first to request assistance from doctors.</p>
+        <h5 class="fw-bold">No New Available Reports</h5>
+        <p>Please upload a new report first to request assistance from doctors.</p>
         <a href="{% url 'home' %}#form-section" class="btn btn-info mt-3 px-4 rounded-pill">Upload Report</a>
     </div>
     {% endif %}

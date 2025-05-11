@@ -141,4 +141,5 @@ EMAIL_HOST_USER = 'noreply.lungapp@gmail.com'  # Your Gmail
 EMAIL_HOST_PASSWORD = 'ppnf omhl obsc nyik'  # App password (not Gmail login)
 
 # Custom sender name
-DEFAULT_FROM_EMAIL = 'Lung Disease App <noreply.lungapp@gmail.com>'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+ADMINS = [('Site Admin', 'abdulhadiumair36@gmail.com')]  # Replace with your admin's email
