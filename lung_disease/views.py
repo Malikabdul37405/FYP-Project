@@ -23,7 +23,7 @@ import tensorflow as tf
 def custom_swish(x):
     return swish(x)
 
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'lung_disease', 'mcnn_trained_model.h5')
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'lung_disease', 'TZH_MCNN_Model.h5')
 
 if os.path.exists(MODEL_PATH):
     model = load_model(MODEL_PATH, custom_objects={"swish": custom_swish})
