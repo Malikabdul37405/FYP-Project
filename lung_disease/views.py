@@ -31,7 +31,7 @@ else:
     model = None
     print("⚠️ Model file not found! Please check the path.")
 
-CLASS_LABELS = ["Benign", "Malignant", "Normal", "Pneumonia"]
+CLASS_LABELS = ["Benign", "Malignant", "Normal", "Pneumonia", "Not_pridicted"]
 
 # ---------------- SIGNUP ----------------
 def sign_up(request):
